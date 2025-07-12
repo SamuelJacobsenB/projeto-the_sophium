@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/modules/entities"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
 )
 
 func Migrate() {

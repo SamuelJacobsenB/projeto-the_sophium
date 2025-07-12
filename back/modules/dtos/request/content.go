@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/modules/entities"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
 )
 
 type ContentDto struct {

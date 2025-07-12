@@ -3,7 +3,7 @@ package response
 import (
 	"time"
 
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/types"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/types"
 )
 
 type UserDTO struct {

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/modules/entities"
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/types"
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/utils"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/types"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/utils"
 )
 
 type FileDto struct {

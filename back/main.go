@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/db"
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/router"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/db"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/router"
 	"github.com/gin-contrib/cors"
 	"github.com/joho/godotenv"
 )

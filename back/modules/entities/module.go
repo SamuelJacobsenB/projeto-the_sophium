@@ -3,7 +3,7 @@ package entities
 import (
 	"time"
 
-	"github.com/SamuelJacobsenB/projeto-the_sophium/backend/modules/dtos/response"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/dtos/response"
 )
 
 type Module struct {
