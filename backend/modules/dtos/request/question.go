@@ -13,7 +13,6 @@ type QuestionDto struct {
 	Statement    string             `json:"statement"`
 	Type         types.QuestionType `json:"type"`
 	FileID       *string            `json:"file_id,omitempty"`
-	Answer       *bool              `json:"answer,omitempty"`
 	Options      []string           `json:"options,omitempty"`
 	CorrectIndex *int               `json:"correct_index,omitempty"`
 }
@@ -34,7 +33,7 @@ func (dto *QuestionDto) Validate() error {
 		return errors.New("statement must be less than 1000 characters")
 	}
 
-	if dto.Type == types.TrueFalse && dto.Answer == nil {
+	if dto.Type == types.TrueFalse && dto.CorrectIndex != nil && *dto.CorrectIndex != 0 && *dto.CorrectIndex != 1 {
 		return errors.New("answer is required for true_false questions")
 
 	}
@@ -65,7 +64,6 @@ func (dto *QuestionDto) ToEntity() *entities.Question {
 		Statement:    dto.Statement,
 		Type:         dto.Type,
 		FileID:       dto.FileID,
-		Answer:       dto.Answer,
 		Options:      dto.Options,
 		CorrectIndex: dto.CorrectIndex,
 	}

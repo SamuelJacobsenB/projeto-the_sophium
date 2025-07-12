@@ -7,18 +7,24 @@ import (
 )
 
 type Enrollment struct {
-	ID        string     `json:"id" gorm:"primaryKey"`
-	UserID    string     `json:"user_id" gorm:"not null"`
-	CourseID  string     `json:"course_id" gorm:"not null"`
-	Progress  []Progress `json:"progress,omitempty" gorm:"foreignKey:EnrollmentID"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt time.Time  `json:"updated_at"`
+	ID        string       `json:"id" gorm:"primaryKey"`
+	UserID    string       `json:"user_id" gorm:"not null"`
+	CourseID  string       `json:"course_id" gorm:"not null"`
+	Progress  []Progress   `json:"progress,omitempty" gorm:"foreignKey:EnrollmentID"`
+	Quizes    []QuizResult `json:"quizes,omitempty" gorm:"foreignKey:EnrollmentID"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt time.Time    `json:"updated_at"`
 }
 
 func (enrollment *Enrollment) ToResponseDTO() *response.EnrollmentDTO {
 	responseProgresses := make([]response.ProgressDTO, len(enrollment.Progress))
 	for i, progress := range enrollment.Progress {
 		responseProgresses[i] = *progress.ToResponseDTO()
+	}
+
+	responseQuizes := make([]response.QuizResultDTO, len(enrollment.Quizes))
+	for i, quiz := range enrollment.Quizes {
+		responseQuizes[i] = *quiz.ToResponseDTO()
 	}
 
 	return &response.EnrollmentDTO{

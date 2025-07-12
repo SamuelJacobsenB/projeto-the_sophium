@@ -14,7 +14,6 @@ type Question struct {
 	Type         types.QuestionType `json:"type" gorm:"type:text;not null"`
 	FileID       *string            `json:"file_id,omitempty"`
 	File         *File              `json:"file,omitempty" gorm:"foreignKey:FileID"`
-	Answer       *bool              `json:"answer,omitempty"`
 	Options      []string           `json:"options" gorm:"-"`
 	CorrectIndex *int               `json:"correct_index,omitempty"`
 	CreatedAt    time.Time          `json:"created_at"`
@@ -23,16 +22,14 @@ type Question struct {
 
 func (question *Question) ToResponseDTO() *response.QuestionDTO {
 	return &response.QuestionDTO{
-		ID:           question.ID,
-		QuizID:       question.QuizID,
-		Statement:    question.Statement,
-		Type:         question.Type,
-		FileID:       question.FileID,
-		File:         question.File.ToResponseDTO(),
-		Answer:       question.Answer,
-		Options:      question.Options,
-		CorrectIndex: question.CorrectIndex,
-		CreatedAt:    question.CreatedAt,
-		UpdatedAt:    question.UpdatedAt,
+		ID:        question.ID,
+		QuizID:    question.QuizID,
+		Statement: question.Statement,
+		Type:      question.Type,
+		FileID:    question.FileID,
+		File:      question.File.ToResponseDTO(),
+		Options:   question.Options,
+		CreatedAt: question.CreatedAt,
+		UpdatedAt: question.UpdatedAt,
 	}
 }
