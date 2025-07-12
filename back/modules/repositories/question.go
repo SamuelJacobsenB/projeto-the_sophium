@@ -16,7 +16,7 @@ func NewQuestionRepository(db *gorm.DB) *QuestionRepository {
 func (repo *QuestionRepository) FindByID(id string) (*entities.Question, error) {
 	var question entities.Question
 
-	if err := repo.db.Where("id = ?", id).First(&question).Error; err != nil {
+	if err := repo.db.Preload("File").Where("id = ?", id).First(&question).Error; err != nil {
 		return nil, err
 	}
 

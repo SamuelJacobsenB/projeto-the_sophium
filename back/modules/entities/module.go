@@ -14,7 +14,7 @@ type Module struct {
 	Order     int       `json:"order" gorm:"not null"`
 	Contents  []Content `json:"contents,omitempty" gorm:"foreignKey:ModuleID"`
 	QuizID    *string   `json:"quiz_id,omitempty"`
-	Quiz      *Quiz     `json:"quiz,omitempty" gorm:"foreignKey:QuizID"`
+	Quiz      *Quiz     `json:"quiz,omitempty" gorm:"foreignKey:QuizID;constraint:OnDelete:CASCADE"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

@@ -8,59 +8,48 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type QuestionController struct {
-	service *services.QuestionService
+type QuizController struct {
+	service *services.QuizService
 }
 
-func NewQuestionController(service *services.QuestionService) *QuestionController {
-	return &QuestionController{service}
+func NewQuizController(service *services.QuizService) *QuizController {
+	return &QuizController{service}
 }
 
-func (controller *QuestionController) FindByID(ctx *gin.Context) {
+func (controller *QuizController) FindByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
 		return
 	}
 
-	question, err := controller.service.FindByID(id)
+	quiz, err := controller.service.FindByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, question.ToResponseDTO())
+	ctx.JSON(http.StatusOK, quiz.ToResponseDTO())
 }
 
-func (controller *QuestionController) Create(ctx *gin.Context) {
-	var dto *request.QuestionDto
-	if err := ctx.ShouldBindJSON(&dto); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if err := dto.Validate(); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	question := dto.ToEntity()
-	if err := controller.service.Create(question); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, question.ToResponseDTO())
-}
-
-func (controller *QuestionController) Update(ctx *gin.Context) {
+func (controller *QuizController) FindWithQuestions(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
 		return
 	}
 
-	var dto *request.QuestionDto
+	quiz, err := controller.service.FindWithQuestions(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, quiz.ToResponseDTO())
+}
+
+func (controller *QuizController) Create(ctx *gin.Context) {
+	var dto *request.QuizDto
 	if err := ctx.ShouldBindJSON(&dto); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -71,16 +60,43 @@ func (controller *QuestionController) Update(ctx *gin.Context) {
 		return
 	}
 
-	question := dto.ToEntity()
-	if err := controller.service.Update(question, id); err != nil {
+	quiz := dto.ToEntity()
+	if err := controller.service.Create(quiz); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, question.ToResponseDTO())
+	ctx.JSON(http.StatusOK, quiz.ToResponseDTO())
 }
 
-func (controller *QuestionController) DeleteByID(ctx *gin.Context) {
+func (controller *QuizController) Update(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return
+	}
+
+	var dto *request.QuizDto
+	if err := ctx.ShouldBindJSON(&dto); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := dto.Validate(); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	quiz := dto.ToEntity()
+	if err := controller.service.Update(quiz, id); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, quiz.ToResponseDTO())
+}
+
+func (controller *QuizController) DeleteByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
@@ -92,5 +108,5 @@ func (controller *QuestionController) DeleteByID(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "question deleted successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "quiz deleted successfully"})
 }

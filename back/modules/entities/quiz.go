@@ -14,7 +14,7 @@ type Quiz struct {
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 
-	Questions []Question `json:"questions,omitempty" gorm:"foreignKey:QuizID"`
+	Questions []Question `json:"questions,omitempty" gorm:"foreignKey:QuizID;constraint:OnDelete:CASCADE"`
 }
 
 func (quiz *Quiz) ToResponseDTO() *response.QuizDTO {

@@ -25,15 +25,21 @@ type User struct {
 }
 
 func (user *User) ToResponseDTO() *response.UserDTO {
+	responseEnrollments := make([]response.EnrollmentDTO, len(user.Enrollments))
+	for i, enrollment := range user.Enrollments {
+		responseEnrollments[i] = *enrollment.ToResponseDTO()
+	}
+
 	return &response.UserDTO{
-		ID:        user.ID,
-		Name:      user.Name,
-		Email:     user.Email,
-		Phone:     user.Phone,
-		Bio:       user.Bio,
-		AvatarID:  user.AvatarID,
-		Roles:     user.Roles,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
+		ID:          user.ID,
+		Name:        user.Name,
+		Email:       user.Email,
+		Phone:       user.Phone,
+		Bio:         user.Bio,
+		AvatarID:    user.AvatarID,
+		Roles:       user.Roles,
+		Enrollments: responseEnrollments,
+		CreatedAt:   user.CreatedAt,
+		UpdatedAt:   user.UpdatedAt,
 	}
 }

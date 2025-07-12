@@ -14,6 +14,8 @@ type Course struct {
 	FileID      *string   `json:"file_id,omitempty"`
 	File        *File     `json:"file,omitempty" gorm:"foreignKey:FileID"`
 	Modules     []Module  `json:"modules,omitempty" gorm:"foreignKey:CourseID"`
+	QuizID      *string   `json:"quiz_id,omitempty"`
+	Quiz        *Quiz     `json:"quiz,omitempty" gorm:"foreignKey:QuizID;constraint:OnDelete:CASCADE"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
@@ -32,6 +34,8 @@ func (course *Course) ToResponseDTO() *response.CourseDTO {
 		FileID:      course.FileID,
 		File:        course.File.ToResponseDTO(),
 		Modules:     responseModules,
+		QuizID:      course.QuizID,
+		Quiz:        course.Quiz.ToResponseDTO(),
 		CreatedAt:   course.CreatedAt,
 		UpdatedAt:   course.UpdatedAt,
 	}
