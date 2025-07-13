@@ -17,9 +17,10 @@ type User struct {
 	Roles             []types.Role `json:"roles" gorm:"type:text[]"`
 	AvatarID          *string      `json:"avatar_id,omitempty"`
 	Avatar            *File        `json:"avatar,omitempty" gorm:"foreignKey:AvatarID"`
+	Enrollments       []Enrollment `json:"enrollments,omitempty" gorm:"foreignKey:UserID"`
 	VerificationToken *string      `json:"-" gorm:"not null,omitempty"`
 	TokenCreatedAt    *time.Time   `json:"-" gorm:"not null,omitempty"`
-	Enrollments       []Enrollment `json:"enrollments,omitempty" gorm:"foreignKey:UserID"`
+	IsVerified        bool         `json:"is_verified" gorm:"default:false"`
 	CreatedAt         time.Time    `json:"created_at"`
 	UpdatedAt         time.Time    `json:"updated_at"`
 }

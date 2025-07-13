@@ -3,17 +3,14 @@ package request
 import (
 	"errors"
 	"fmt"
+
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/types"
 )
 
 type QuizAttemptDto struct {
-	EnrollmentID string        `json:"enrollment_id"`
-	QuizID       string        `json:"quiz_id"`
-	Answers      []AnswerInput `json:"answers"`
-}
-
-type AnswerInput struct {
-	QuestionIndex int `json:"question_index"`
-	Selected      int `json:"selected"`
+	EnrollmentID string              `json:"enrollment_id"`
+	QuizID       string              `json:"quiz_id"`
+	Answers      []types.AnswerInput `json:"answers"`
 }
 
 func (dto *QuizAttemptDto) Validate() error {

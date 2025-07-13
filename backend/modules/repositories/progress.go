@@ -14,13 +14,13 @@ func NewProgressRepository(db *gorm.DB) *ProgressRepository {
 }
 
 func (repo *ProgressRepository) FindByID(id string) (*entities.Progress, error) {
-	var progress entities.Progress
+	var progress *entities.Progress
 
 	if err := repo.db.Where("id = ?", id).First(&progress).Error; err != nil {
 		return nil, err
 	}
 
-	return &progress, nil
+	return progress, nil
 }
 
 func (repo *ProgressRepository) Create(progress *entities.Progress) error {

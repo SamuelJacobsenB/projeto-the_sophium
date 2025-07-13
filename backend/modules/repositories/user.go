@@ -1,0 +1,50 @@
+package repositories
+
+import (
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
+	"gorm.io/gorm"
+)
+
+type UserRepository struct {
+	db *gorm.DB
+}
+
+func NewUserRepository(db *gorm.DB) *UserRepository {
+	return &UserRepository{db}
+}
+
+func (repo *UserRepository) FindByID(id string) (*entities.User, error) {
+	var user *entities.User
+
+	if err := repo.db.Preload("File").Preload("Enrollments").Where("id = ?", id).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (repo *UserRepository) FindByEmail(email string) (*entities.User, error) {
+	var user *entities.User
+
+	if err := repo.db.Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (repo *UserRepository) Create(user *entities.User) error {
+	return repo.db.Create(user).Error
+}
+
+func (repo *UserRepository) Update(user *entities.User, id string) error {
+	return repo.db.Model(&entities.User{}).Where("id = ?", id).Updates(user).Error
+}
+
+func (repo *UserRepository) DeleteUnverifiedUsersByEmail(email string) error {
+	return repo.db.Where("email = ? AND is_verified = false", email).Delete(&entities.User{}).Error
+}
+
+func (repo *UserRepository) DeleteByID(id string) error {
+	return repo.db.Delete(&entities.User{}, "id = ?", id).Error
+}
