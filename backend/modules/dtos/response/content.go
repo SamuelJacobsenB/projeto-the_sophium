@@ -13,7 +13,6 @@ type ContentDTO struct {
 	FileID    *string   `json:"file_id,omitempty"`
 	File      *FileDTO  `json:"file,omitempty"`
 	Order     int       `json:"order"`
-	IsPublic  bool      `json:"is_public"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

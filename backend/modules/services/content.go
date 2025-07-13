@@ -1,0 +1,68 @@
+package services
+
+import (
+	"errors"
+
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/repositories"
+)
+
+type ContentService struct {
+	repository *repositories.ContentRepository
+	moduleRepo *repositories.ModuleRepository
+}
+
+func NewContentService(repository *repositories.ContentRepository, moduleRepo *repositories.ModuleRepository) *ContentService {
+	return &ContentService{repository, moduleRepo}
+}
+
+func (service *ContentService) FindByID(id string) (*entities.Content, error) {
+	return service.repository.FindByID(id)
+}
+
+func (service *ContentService) Create(content *entities.Content) error {
+	module, err := service.moduleRepo.FindByID(content.ModuleID)
+	if err != nil {
+		return err
+	}
+	if module == nil {
+		return errors.New("module not found")
+	}
+
+	return service.repository.Create(content)
+}
+
+func (service *ContentService) Update(content *entities.Content, id string) error {
+	return service.repository.Update(content, id)
+}
+
+func (service *ContentService) ChangeOrder(id string) error {
+	content, err := service.repository.FindByID(id)
+	if err != nil {
+		return err
+	}
+
+	if content.Order == 0 {
+		return nil
+	}
+
+	previous, err := service.repository.FindByOrder(content.Order-1, content.ModuleID)
+	if err != nil {
+		return err
+	}
+
+	content.Order, previous.Order = previous.Order, content.Order
+
+	if err := service.repository.Update(content, content.ID); err != nil {
+		return err
+	}
+	if err := service.repository.Update(previous, previous.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (service *ContentService) DeleteByID(id string) error {
+	return service.repository.DeleteByID(id)
+}

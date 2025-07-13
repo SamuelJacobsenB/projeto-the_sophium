@@ -14,23 +14,23 @@ func NewQuizRepository(db *gorm.DB) *QuizRepository {
 }
 
 func (repo *QuizRepository) FindByID(id string) (*entities.Quiz, error) {
-	var quiz entities.Quiz
+	var quiz *entities.Quiz
 
 	if err := repo.db.Where("id = ?", id).First(&quiz).Error; err != nil {
 		return nil, err
 	}
 
-	return &quiz, nil
+	return quiz, nil
 }
 
 func (repo *QuizRepository) FindWithQuestions(id string) (*entities.Quiz, error) {
-	var quiz entities.Quiz
+	var quiz *entities.Quiz
 
 	if err := repo.db.Preload("Questions").Where("id = ?", id).First(&quiz).Error; err != nil {
 		return nil, err
 	}
 
-	return &quiz, nil
+	return quiz, nil
 }
 
 func (repo *QuizRepository) Create(quiz *entities.Quiz) error {

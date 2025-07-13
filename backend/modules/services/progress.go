@@ -1,16 +1,19 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/repositories"
 )
 
 type ProgressService struct {
-	repository *repositories.ProgressRepository
+	repository     *repositories.ProgressRepository
+	enrollmentRepo *repositories.EnrollmentRepository
 }
 
-func NewProgressService(repository *repositories.ProgressRepository) *ProgressService {
-	return &ProgressService{repository}
+func NewProgressService(repository *repositories.ProgressRepository, enrollmentRepo *repositories.EnrollmentRepository) *ProgressService {
+	return &ProgressService{repository, enrollmentRepo}
 }
 
 func (service *ProgressService) FindByID(id string) (*entities.Progress, error) {
@@ -18,13 +21,20 @@ func (service *ProgressService) FindByID(id string) (*entities.Progress, error) 
 }
 
 func (service *ProgressService) Create(progress *entities.Progress) error {
-	// Verify if a content and enrollment exists
-	exists, err := service.repository.FindByID(progress.ID)
+	enrollmentExists, err := service.enrollmentRepo.FindByID(progress.EnrollmentID)
+	if err != nil {
+		return err
+	}
+	if enrollmentExists == nil {
+		return errors.New("enrollment not found")
+	}
+
+	progressExists, err := service.repository.FindByID(progress.ID)
 	if err == nil {
 		return err
 	}
-	if exists != nil {
-		return nil
+	if progressExists != nil {
+		return errors.New("progress already exists")
 	}
 
 	return service.repository.Create(progress)

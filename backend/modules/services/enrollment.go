@@ -1,16 +1,19 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/repositories"
 )
 
 type EnrollmentService struct {
 	repository *repositories.EnrollmentRepository
+	userRepo   *repositories.UserRepository
 }
 
-func NewEnrollmentService(repository *repositories.EnrollmentRepository) *EnrollmentService {
-	return &EnrollmentService{repository}
+func NewEnrollmentService(repository *repositories.EnrollmentRepository, userRepo *repositories.UserRepository) *EnrollmentService {
+	return &EnrollmentService{repository, userRepo}
 }
 
 func (service *EnrollmentService) FindByID(id string) (*entities.Enrollment, error) {
@@ -18,8 +21,15 @@ func (service *EnrollmentService) FindByID(id string) (*entities.Enrollment, err
 }
 
 func (service *EnrollmentService) Create(enrollment *entities.Enrollment) error {
-	// Verify User ID
 	// Verify Course ID
+
+	userExists, err := service.userRepo.FindByID(enrollment.UserID)
+	if err != nil {
+		return err
+	}
+	if userExists == nil {
+		return errors.New("user not found")
+	}
 
 	return service.repository.Create(enrollment)
 }

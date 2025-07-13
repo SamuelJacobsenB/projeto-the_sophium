@@ -14,7 +14,6 @@ type ContentDto struct {
 	VideoURL *string `json:"video_url,omitempty"`
 	FileID   *string `json:"file_id,omitempty"`
 	Order    int     `json:"order"`
-	IsPublic bool    `json:"is_public"`
 }
 
 func (dto *ContentDto) Validate() error {
@@ -55,6 +54,5 @@ func (dto *ContentDto) ToEntity() *entities.Content {
 		VideoURL: dto.VideoURL,
 		FileID:   dto.FileID,
 		Order:    dto.Order,
-		IsPublic: dto.IsPublic,
 	}
 }

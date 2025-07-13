@@ -8,32 +8,48 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserController struct {
-	service *services.UserService
+type ModuleController struct {
+	service *services.ModuleService
 }
 
-func NewUserController(service *services.UserService) *UserController {
-	return &UserController{service}
+func NewModuleController(service *services.ModuleService) *ModuleController {
+	return &ModuleController{service}
 }
 
-func (controller *UserController) FindByID(ctx *gin.Context) {
+func (controller *ModuleController) FindByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
 		return
 	}
 
-	user, err := controller.service.FindByID(id)
+	module, err := controller.service.FindByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user.ToResponseDTO())
+	ctx.JSON(http.StatusOK, module.ToResponseDTO())
 }
 
-func (controller *UserController) Create(ctx *gin.Context) {
-	var dto *request.UserDto
+func (controller *ModuleController) FindBySlug(ctx *gin.Context) {
+	slug := ctx.Param("slug")
+	if slug == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "slug is required"})
+		return
+	}
+
+	module, err := controller.service.FindBySlug(slug)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, module.ToResponseDTO())
+}
+
+func (controller *ModuleController) Create(ctx *gin.Context) {
+	var dto *request.ModuleDto
 	if err := ctx.ShouldBindJSON(&dto); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -44,23 +60,23 @@ func (controller *UserController) Create(ctx *gin.Context) {
 		return
 	}
 
-	user := dto.ToEntity()
-	if err := controller.service.Create(user); err != nil {
+	module := dto.ToEntity()
+	if err := controller.service.Create(module); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user.ToResponseDTO())
+	ctx.JSON(http.StatusOK, module.ToResponseDTO())
 }
 
-func (controller *UserController) Update(ctx *gin.Context) {
+func (controller *ModuleController) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
 		return
 	}
 
-	var dto *request.UserDto
+	var dto *request.ModuleDto
 	if err := ctx.ShouldBindJSON(&dto); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -71,37 +87,31 @@ func (controller *UserController) Update(ctx *gin.Context) {
 		return
 	}
 
-	user := dto.ToEntity()
-	if err := controller.service.Update(user, id); err != nil {
+	module := dto.ToEntity()
+	if err := controller.service.Update(module, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user.ToResponseDTO())
+	ctx.JSON(http.StatusOK, module.ToResponseDTO())
 }
 
-func (controller *UserController) VerifyToken(ctx *gin.Context) {
+func (controller *ModuleController) ChangeOrder(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
 		return
 	}
 
-	token := ctx.Query("token")
-	if token == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "token is required"})
-		return
-	}
-
-	if err := controller.service.VerifyToken(id, token); err != nil {
+	if err := controller.service.ChangeOrder(id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "token verified successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "module order changed successfully"})
 }
 
-func (controller *UserController) DeleteByID(ctx *gin.Context) {
+func (controller *ModuleController) DeleteByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
@@ -113,5 +123,5 @@ func (controller *UserController) DeleteByID(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "user deleted successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "module deleted successfully"})
 }

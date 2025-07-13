@@ -15,7 +15,6 @@ type Content struct {
 	File      *File     `json:"file,omitempty" gorm:"foreignKey:FileID"`
 	HTML      *string   `json:"html" gorm:"type:text;not null"`
 	Order     int       `json:"order" gorm:"not null"`
-	IsPublic  bool      `json:"is_public" gorm:"default:false"`
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"not null"`
 }
@@ -29,7 +28,6 @@ func (content *Content) ToResponseDTO() *response.ContentDTO {
 		FileID:    content.FileID,
 		HTML:      content.HTML,
 		Order:     content.Order,
-		IsPublic:  content.IsPublic,
 		CreatedAt: content.CreatedAt,
 		UpdatedAt: content.UpdatedAt,
 	}
