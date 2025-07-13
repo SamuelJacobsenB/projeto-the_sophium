@@ -10,10 +10,11 @@ import (
 type ProgressService struct {
 	repository     *repositories.ProgressRepository
 	enrollmentRepo *repositories.EnrollmentRepository
+	contentRepo    *repositories.ContentRepository
 }
 
-func NewProgressService(repository *repositories.ProgressRepository, enrollmentRepo *repositories.EnrollmentRepository) *ProgressService {
-	return &ProgressService{repository, enrollmentRepo}
+func NewProgressService(repository *repositories.ProgressRepository, enrollmentRepo *repositories.EnrollmentRepository, contentRepo *repositories.ContentRepository) *ProgressService {
+	return &ProgressService{repository, enrollmentRepo, contentRepo}
 }
 
 func (service *ProgressService) FindByID(id string) (*entities.Progress, error) {
@@ -21,6 +22,14 @@ func (service *ProgressService) FindByID(id string) (*entities.Progress, error) 
 }
 
 func (service *ProgressService) Create(progress *entities.Progress) error {
+	contentExists, err := service.contentRepo.FindByID(progress.ContentID)
+	if err != nil {
+		return err
+	}
+	if contentExists == nil {
+		return errors.New("content not found")
+	}
+
 	enrollmentExists, err := service.enrollmentRepo.FindByID(progress.EnrollmentID)
 	if err != nil {
 		return err

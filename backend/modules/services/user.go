@@ -55,6 +55,30 @@ func (service *UserService) Update(user *entities.User, id string) error {
 	return service.repository.Update(user, id)
 }
 
+func (service *UserService) RequestPasswordChange(id string) error {
+	user, err := service.repository.FindByID(id)
+	if err != nil {
+		return err
+	}
+
+	token := utils.GenerateToken()
+
+	hashedToken, err := utils.Hash(token)
+	if err != nil {
+		return err
+	}
+
+	user.VerificationToken = &hashedToken
+	now := time.Now()
+	user.TokenCreatedAt = &now
+
+	if err := service.repository.Update(user, id); err != nil {
+		return err
+	}
+
+	return utils.SendEmail(user.Email, "Confirmação de troca de senha", utils.GenerateResetPasswordText(user.Name, token))
+}
+
 func (service *UserService) VerifyToken(id, token string) error {
 	user, err := service.repository.FindByID(id)
 	if err != nil {
@@ -86,6 +110,36 @@ func (service *UserService) VerifyToken(id, token string) error {
 	}
 
 	return service.repository.DeleteUnverifiedUsersByEmail(user.Email)
+}
+
+func (service *UserService) ConfirmPasswordChange(id, token, newPassword string) error {
+	user, err := service.repository.FindByID(id)
+	if err != nil {
+		return err
+	}
+
+	if user.VerificationToken == nil || user.TokenCreatedAt == nil {
+		return errors.New("nenhum pedido de troca de senha foi feito")
+	}
+
+	if time.Since(*user.TokenCreatedAt) > time.Minute*10 {
+		return errors.New("token expirado")
+	}
+
+	if err := utils.CompareHash(token, *user.VerificationToken); err != nil {
+		return errors.New("token inválido")
+	}
+
+	hashedPassword, err := utils.Hash(newPassword)
+	if err != nil {
+		return err
+	}
+
+	user.Password = hashedPassword
+	user.VerificationToken = nil
+	user.TokenCreatedAt = nil
+
+	return service.repository.Update(user, id)
 }
 
 func (service *UserService) DeleteByID(id string) error {

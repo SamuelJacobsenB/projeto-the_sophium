@@ -24,8 +24,6 @@ func (service *QuizResultService) FindByID(id string) (*entities.QuizResult, err
 }
 
 func (service *QuizResultService) Create(quizAttemptDto *request.QuizAttemptDto) (*entities.QuizResult, error) {
-	// Verify if a content exists
-
 	enrollmentExists, err := service.enrollmentRepo.FindByID(quizAttemptDto.EnrollmentID)
 	if err != nil {
 		return nil, err

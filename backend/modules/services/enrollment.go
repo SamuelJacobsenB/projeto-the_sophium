@@ -10,10 +10,11 @@ import (
 type EnrollmentService struct {
 	repository *repositories.EnrollmentRepository
 	userRepo   *repositories.UserRepository
+	courseRepo *repositories.CourseRepository
 }
 
-func NewEnrollmentService(repository *repositories.EnrollmentRepository, userRepo *repositories.UserRepository) *EnrollmentService {
-	return &EnrollmentService{repository, userRepo}
+func NewEnrollmentService(repository *repositories.EnrollmentRepository, userRepo *repositories.UserRepository, courseRepo *repositories.CourseRepository) *EnrollmentService {
+	return &EnrollmentService{repository, userRepo, courseRepo}
 }
 
 func (service *EnrollmentService) FindByID(id string) (*entities.Enrollment, error) {
@@ -21,7 +22,13 @@ func (service *EnrollmentService) FindByID(id string) (*entities.Enrollment, err
 }
 
 func (service *EnrollmentService) Create(enrollment *entities.Enrollment) error {
-	// Verify Course ID
+	courseExists, err := service.courseRepo.FindByID(enrollment.CourseID)
+	if err != nil {
+		return err
+	}
+	if courseExists == nil {
+		return errors.New("course not found")
+	}
 
 	userExists, err := service.userRepo.FindByID(enrollment.UserID)
 	if err != nil {
