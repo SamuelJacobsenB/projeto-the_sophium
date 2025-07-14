@@ -9,11 +9,12 @@ import (
 )
 
 type QuizResultController struct {
-	service *services.QuizResultService
+	service           *services.QuizResultService
+	enrollmentService *services.EnrollmentService
 }
 
-func NewQuizResultController(service *services.QuizResultService) *QuizResultController {
-	return &QuizResultController{service}
+func NewQuizResultController(service *services.QuizResultService, enrollmentService *services.EnrollmentService) *QuizResultController {
+	return &QuizResultController{service, enrollmentService}
 }
 
 func (controller *QuizResultController) FindByID(ctx *gin.Context) {
@@ -23,9 +24,26 @@ func (controller *QuizResultController) FindByID(ctx *gin.Context) {
 		return
 	}
 
+	userID := ctx.GetString("user_id")
+	if userID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
 	quizResult, err := controller.service.FindByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(quizResult.EnrollmentID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userID {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
 	}
 
@@ -41,6 +59,23 @@ func (controller *QuizResultController) Create(ctx *gin.Context) {
 
 	if err := dto.Validate(); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	userID := ctx.GetString("user_id")
+	if userID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(dto.EnrollmentID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userID {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
 	}
 
@@ -71,6 +106,23 @@ func (controller *QuizResultController) Update(ctx *gin.Context) {
 		return
 	}
 
+	userID := ctx.GetString("user_id")
+	if userID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(dto.EnrollmentID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userID {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		return
+	}
+
 	quizResult, err := controller.service.Update(dto, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -84,6 +136,23 @@ func (controller *QuizResultController) DeleteByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return
+	}
+
+	userID := ctx.GetString("user_id")
+	if userID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userID {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
 	}
 

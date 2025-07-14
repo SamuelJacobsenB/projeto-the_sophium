@@ -16,7 +16,7 @@ func NewModuleRepository(db *gorm.DB) *ModuleRepository {
 func (repo *ModuleRepository) FindByID(id string) (*entities.Module, error) {
 	var module *entities.Module
 
-	if err := repo.db.First(&module, "id = ?", id).Error; err != nil {
+	if err := repo.db.Preload("Quiz").First(&module, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
@@ -26,7 +26,7 @@ func (repo *ModuleRepository) FindByID(id string) (*entities.Module, error) {
 func (repo *ModuleRepository) FindBySlug(slug string) (*entities.Module, error) {
 	var module *entities.Module
 
-	if err := repo.db.First(&module, "slug = ?", slug).Error; err != nil {
+	if err := repo.db.Preload("Quiz").First(&module, "slug = ?", slug).Error; err != nil {
 		return nil, err
 	}
 

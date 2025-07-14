@@ -26,6 +26,11 @@ func (service *UserService) FindByEmail(email string) (*entities.User, error) {
 }
 
 func (service *UserService) Create(user *entities.User) error {
+	exists, _ := service.repository.FindByEmail(user.Email)
+	if exists != nil && exists.IsVerified {
+		return errors.New("user already exists")
+	}
+
 	token := utils.GenerateToken()
 
 	if err := utils.SendEmail(user.Email, "Bem vindo(a) ao The Sophium!", utils.GenerateWelcomeText(user.Name, token)); err != nil {

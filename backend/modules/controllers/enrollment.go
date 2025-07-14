@@ -23,9 +23,20 @@ func (controller *EnrollmentController) FindByID(ctx *gin.Context) {
 		return
 	}
 
+	userId := ctx.GetString("user_id")
+	if userId == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
 	enrollment, err := controller.service.FindByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userId {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
 	}
 
@@ -41,6 +52,12 @@ func (controller *EnrollmentController) Create(ctx *gin.Context) {
 
 	if err := dto.Validate(); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	userId := ctx.GetString("user_id")
+	if userId == "" || userId != dto.UserID {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
 		return
 	}
 
@@ -71,6 +88,12 @@ func (controller *EnrollmentController) Update(ctx *gin.Context) {
 		return
 	}
 
+	userID := ctx.GetString("user_id")
+	if userID == "" || userID != dto.UserID {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
 	enrollment := dto.ToEntity()
 	if err := controller.service.Update(enrollment, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -84,6 +107,23 @@ func (controller *EnrollmentController) DeleteByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return
+	}
+
+	userID := ctx.GetString("user_id")
+	if userID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
+	enrollment, err := controller.service.FindByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userID {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
 	}
 

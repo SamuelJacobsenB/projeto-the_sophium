@@ -9,6 +9,7 @@ import (
 
 type AppControllers struct {
 	FileController       *controllers.FileController
+	AuthController       *controllers.AuthController
 	UserController       *controllers.UserController
 	EnrollmentController *controllers.EnrollmentController
 	ProgressController   *controllers.ProgressController
@@ -33,6 +34,7 @@ func InitializeControllers(db *gorm.DB) *AppControllers {
 	questionRepository := repositories.NewQuestionRepository(db)
 
 	fileService := services.NewFileService(fileRepository)
+	authService := services.NewAuthService(userRepository)
 	userService := services.NewUserService(userRepository)
 	enrollmentService := services.NewEnrollmentService(enrollmentRepository, userRepository, courseRepository)
 	progressService := services.NewProgressService(progressRepository, enrollmentRepository, contentRepository)
@@ -44,10 +46,11 @@ func InitializeControllers(db *gorm.DB) *AppControllers {
 	questionService := services.NewQuestionService(questionRepository, quizRepository)
 
 	fileController := controllers.NewFileController(fileService)
+	authController := controllers.NewAuthController(authService)
 	userController := controllers.NewUserController(userService)
 	enrollmentController := controllers.NewEnrollmentController(enrollmentService)
-	progressController := controllers.NewProgressController(progressService)
-	quizResultController := controllers.NewQuizResultController(quizResultService)
+	progressController := controllers.NewProgressController(progressService, enrollmentService)
+	quizResultController := controllers.NewQuizResultController(quizResultService, enrollmentService)
 	courseController := controllers.NewCourseController(courseService)
 	moduleController := controllers.NewModuleController(moduleService)
 	contentController := controllers.NewContentController(contentService)
@@ -56,6 +59,7 @@ func InitializeControllers(db *gorm.DB) *AppControllers {
 
 	return &AppControllers{
 		FileController:       fileController,
+		AuthController:       authController,
 		UserController:       userController,
 		EnrollmentController: enrollmentController,
 		ProgressController:   progressController,

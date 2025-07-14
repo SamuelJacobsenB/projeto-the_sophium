@@ -9,11 +9,12 @@ import (
 )
 
 type ProgressController struct {
-	service *services.ProgressService
+	service           *services.ProgressService
+	enrollmentService *services.EnrollmentService
 }
 
-func NewProgressController(service *services.ProgressService) *ProgressController {
-	return &ProgressController{service}
+func NewProgressController(service *services.ProgressService, enrollmentService *services.EnrollmentService) *ProgressController {
+	return &ProgressController{service, enrollmentService}
 }
 
 func (controller *ProgressController) FindByID(ctx *gin.Context) {
@@ -23,9 +24,26 @@ func (controller *ProgressController) FindByID(ctx *gin.Context) {
 		return
 	}
 
+	userId := ctx.GetString("user_id")
+	if userId == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
 	progress, err := controller.service.FindByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(progress.EnrollmentID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userId {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
 	}
 
@@ -44,6 +62,23 @@ func (controller *ProgressController) Create(ctx *gin.Context) {
 		return
 	}
 
+	userId := ctx.GetString("user_id")
+	if userId == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(dto.EnrollmentID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userId {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+		return
+	}
+
 	progress := dto.ToEntity()
 	if err := controller.service.Create(progress); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -57,6 +92,23 @@ func (controller *ProgressController) DeleteByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return
+	}
+
+	userId := ctx.GetString("user_id")
+	if userId == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "user_id is required"})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if enrollment.UserID != userId {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 		return
 	}
 
