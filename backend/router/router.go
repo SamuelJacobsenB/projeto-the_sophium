@@ -12,7 +12,6 @@ func RegisterRoutes() *gin.Engine {
 	router.Static("/uploads", "./uploads")
 
 	api := router.Group("/api")
-
 	v1 := api.Group("/v1")
 
 	controllers := bootstrap.InitializeControllers(db.DB)
