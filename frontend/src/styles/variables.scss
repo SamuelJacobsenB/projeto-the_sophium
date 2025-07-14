@@ -1,0 +1,12 @@
+$primary-color: "#bc1823";
+$secondary-color: "#efefef";
+$success-color: "#28a745";
+$danger-color: "#dc3545";
+$text-color: "#212121";
+
+$primary-hover: darken($primary-color, 10%);
+$success-hover: darken($success-color, 8%);
+$danger-hover: darken($danger-color, 5%);
+
+$primary-font: "Telegraf" sans-serif;
+$secondary-font: "Open Sans" sans-serif;
