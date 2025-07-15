@@ -1,0 +1,68 @@
+@import url("../../../styles/variables.css");
+
+.message {
+  z-index: 10;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 1.5rem;
+  animation: slideInFade 0.5s ease-out, fadeOut 0.5s ease-in 5.5s forwards;
+}
+
+@keyframes slideInFade {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+.success {
+  background-color: var(--success-color);
+}
+.error {
+  background-color: var(--danger-color);
+}
+.info {
+  background-color: var(--info-color);
+}
+
+.messageIcon {
+  font-size: 1rem;
+}
+
+.messageText {
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.messageClose {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}

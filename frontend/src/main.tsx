@@ -8,6 +8,8 @@ import { App } from "./pages";
 import "./styles/index.css";
 import "./styles/fonts.css";
 import "./styles/variables.css";
+import { Message } from "./components";
+import { Provider } from "./contexts";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +32,10 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <Provider>
+        <Message />
+        <RouterProvider router={router} />
+      </Provider>
     </QueryClientProvider>
   </StrictMode>
 );

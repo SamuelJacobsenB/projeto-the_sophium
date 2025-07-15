@@ -24,3 +24,5 @@ export * from "./dtos/change_password";
 export * from "./extension";
 export * from "./question_type";
 export * from "./role";
+
+export * from "./message_type";
