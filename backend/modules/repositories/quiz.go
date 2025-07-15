@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -34,6 +35,8 @@ func (repo *QuizRepository) FindWithQuestions(id string) (*entities.Quiz, error)
 }
 
 func (repo *QuizRepository) Create(quiz *entities.Quiz) error {
+	quiz.ID = uuid.NewString()
+
 	return repo.db.Create(quiz).Error
 }
 

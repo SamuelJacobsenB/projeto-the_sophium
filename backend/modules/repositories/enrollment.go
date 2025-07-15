@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -34,6 +35,8 @@ func (repo *EnrollmentRepository) FindByUserAndCourse(userID string, courseID st
 }
 
 func (repo *EnrollmentRepository) Create(enrollment *entities.Enrollment) error {
+	enrollment.ID = uuid.NewString()
+
 	return repo.db.Create(enrollment).Error
 }
 

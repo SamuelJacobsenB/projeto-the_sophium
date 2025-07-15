@@ -15,13 +15,13 @@ func AuthMiddleware(roles []types.Role) gin.HandlerFunc {
 	}
 
 	return func(ctx *gin.Context) {
-		authHeader := ctx.GetHeader("Authorization")
-		if authHeader == "" {
+		cookieToken, err := ctx.Cookie("access_token")
+		if cookieToken == "" || err != nil {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "usuário deve estar logado"})
 			return
 		}
 
-		strToken := authHeader[len("Bearer "):]
+		strToken := cookieToken[len("Bearer "):]
 		if strToken == "" {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token inválido"})
 			return

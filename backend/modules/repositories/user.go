@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -34,6 +35,8 @@ func (repo *UserRepository) FindByEmail(email string) (*entities.User, error) {
 }
 
 func (repo *UserRepository) Create(user *entities.User) error {
+	user.ID = uuid.NewString()
+
 	return repo.db.Create(user).Error
 }
 

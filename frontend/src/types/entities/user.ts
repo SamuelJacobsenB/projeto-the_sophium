@@ -1,0 +1,15 @@
+import type { Role, Enrollment } from "../";
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  bio: string | null;
+  roles: Role[];
+  avatarID: string | null;
+  avatar: File | null;
+  enrollments: Enrollment[];
+  created_at: Date;
+  updated_at: Date;
+}

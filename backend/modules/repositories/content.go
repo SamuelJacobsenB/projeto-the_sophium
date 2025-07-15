@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -34,6 +35,8 @@ func (repo *ContentRepository) FindByOrder(order int, moduleID string) (*entitie
 }
 
 func (repo *ContentRepository) Create(content *entities.Content) error {
+	content.ID = uuid.NewString()
+
 	return repo.db.Create(content).Error
 }
 

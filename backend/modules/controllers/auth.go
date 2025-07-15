@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"net/http"
+	"os"
+
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/dtos/request"
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/services"
 	"github.com/gin-gonic/gin"
@@ -27,13 +30,14 @@ func (controller *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(200, gin.H{"token": token})
+	ctx.SetCookie("access_token", "Bearer "+token, 3600, "/", os.Getenv("HOST"), false, true)
+	ctx.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }
 
 func (controller *AuthController) VerifyUser(ctx *gin.Context) {
-	ctx.JSON(200, gin.H{"message": "user verified successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "user verified successfully"})
 }
 
 func (controller *AuthController) VerifyAdmin(ctx *gin.Context) {
-	ctx.JSON(200, gin.H{"message": "admin verified successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "admin verified successfully"})
 }
