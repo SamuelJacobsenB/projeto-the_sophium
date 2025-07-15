@@ -1,0 +1,24 @@
+@import url("../../../styles/variables.css");
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.titleCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  padding: 1rem;
+  border-radius: 100%;
+}
+
+.titleIcon {
+  color: white;
+}
+
+.titleText {
+  font-weight: var(--font-weight-bold);
+}

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { I } from "../../";
+import { I } from "../..";
 
 import logo from "../../../assets/pngs/logo.png";
 
 import styles from "./styles.module.css";
-import { navRoutes } from "../../../routes";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,13 +31,26 @@ export function Navbar() {
       <div className={styles.menu}>
         {isOpen && (
           <ul className={styles.routeList}>
-            {navRoutes.map((route) => (
-              <li key={route.path}>
-                <Link to={route.path} className={styles.routeLink}>
-                  {route.label}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link to={"/"} className={styles.routeLink}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to={"/#courses"} className={styles.routeLink}>
+                Cursos
+              </Link>
+            </li>
+            <li>
+              <a
+                href="mailto:thesophium@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.routeLink}
+              >
+                Contato
+              </a>
+            </li>
           </ul>
         )}
       </div>

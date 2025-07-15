@@ -1,0 +1,20 @@
+.courseSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  padding: 1rem 15%;
+}
+
+.courseList {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+@media screen and (max-width: 480px) {
+  .courseSection {
+    padding: 1rem 5%;
+  }
+}

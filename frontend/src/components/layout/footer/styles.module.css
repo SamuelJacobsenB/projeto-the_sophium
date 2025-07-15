@@ -1,0 +1,48 @@
+@import url("../../../styles/variables.css");
+
+.footer {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: var(--secondary-font);
+  font-size: 0.9rem;
+}
+
+.footerInfo {
+  margin-bottom: 0.5rem;
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footerLink {
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-weight: var(--font-weight-regular);
+}
+
+.footerLink:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.footerIconLink {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+}
