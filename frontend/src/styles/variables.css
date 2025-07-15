@@ -1,0 +1,18 @@
+:root {
+  --primary-color: #bc1823;
+  --secondary-color: #efefef;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --text-color: #212121;
+
+  --primary-hover: #9f131a;
+  --success-hover: #1e7e34;
+  --danger-hover: #c82333;
+
+  --primary-font: "Telegraf", sans-serif;
+  --secondary-font: "Open Sans", sans-serif;
+
+  --font-weight-bold: 700;
+  --font-weight-regular: 400;
+  --font-weight-light: 300;
+}

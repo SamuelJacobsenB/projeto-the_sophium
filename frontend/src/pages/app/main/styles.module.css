@@ -1,0 +1,125 @@
+@import url("../../../styles/variables.css");
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  height: calc(100vh - 64px);
+  padding: 2rem;
+}
+
+.mainText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 0.8rem;
+  padding-left: 15%;
+}
+
+.mainTitle {
+  font-size: 5rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.mainSlogan {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-regular);
+}
+
+/* Buttons */
+.mainButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 0.2rem;
+  padding-left: 15%;
+}
+
+.mainLink {
+  width: 100%;
+}
+
+.mainOr {
+  font-size: 1rem;
+}
+
+/* Statue of Libert */
+.stateOfLibert {
+  z-index: -1;
+  position: absolute;
+  bottom: 0;
+  right: 5%;
+  height: 100%;
+  width: auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .mainContent {
+    padding: 1rem;
+  }
+
+  .mainText {
+    padding-left: 5%;
+  }
+
+  .mainButtons {
+    padding-left: 5%;
+  }
+
+  .stateOfLibert {
+    right: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mainContent {
+    justify-content: start;
+    padding: 1rem;
+    padding-top: 16%;
+  }
+
+  .mainText {
+    padding-left: 5%;
+  }
+
+  .mainButtons {
+    padding-left: 5%;
+  }
+
+  .stateOfLibert {
+    height: 50%;
+    right: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mainContent {
+    justify-content: center;
+  }
+
+  .mainText {
+    padding-left: 5%;
+  }
+
+  .mainTitle {
+    font-size: 3rem;
+  }
+
+  .mainSlogan {
+    font-size: 1rem;
+  }
+
+  .mainButtons {
+    padding-left: 5%;
+  }
+
+  .stateOfLibert {
+    height: 50%;
+    right: 0;
+  }
+}
