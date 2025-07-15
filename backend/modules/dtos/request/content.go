@@ -13,7 +13,6 @@ type ContentDto struct {
 	HTML     *string `json:"html"`
 	VideoURL *string `json:"video_url,omitempty"`
 	FileID   *string `json:"file_id,omitempty"`
-	Order    int     `json:"order"`
 }
 
 func (dto *ContentDto) Validate() error {
@@ -35,10 +34,6 @@ func (dto *ContentDto) Validate() error {
 		return errors.New("title must be less than 50 characters")
 	}
 
-	if dto.Order < 0 {
-		return errors.New("order must be greater than or equal to 0")
-	}
-
 	if dto.HTML != nil && len(*dto.HTML) > 10000 {
 		return errors.New("html must be less than 10000 characters")
 	}
@@ -53,6 +48,5 @@ func (dto *ContentDto) ToEntity() *entities.Content {
 		HTML:     dto.HTML,
 		VideoURL: dto.VideoURL,
 		FileID:   dto.FileID,
-		Order:    dto.Order,
 	}
 }

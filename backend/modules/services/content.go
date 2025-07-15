@@ -29,6 +29,8 @@ func (service *ContentService) Create(content *entities.Content) error {
 		return errors.New("module not found")
 	}
 
+	content.Order = len(module.Contents)
+
 	return service.repository.Create(content)
 }
 

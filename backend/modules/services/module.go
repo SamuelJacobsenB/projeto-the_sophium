@@ -33,6 +33,8 @@ func (service *ModuleService) Create(module *entities.Module) error {
 		return errors.New("course not found")
 	}
 
+	module.Order = len(course.Modules)
+
 	return service.repository.Create(module)
 }
 

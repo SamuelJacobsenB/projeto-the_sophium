@@ -12,7 +12,6 @@ type ModuleDto struct {
 	Title    string  `json:"title"`
 	Slug     string  `json:"slug"`
 	CourseID string  `json:"course_id"`
-	Order    int     `json:"order"`
 	QuizID   *string `json:"quiz_id,omitempty"`
 }
 
@@ -41,10 +40,6 @@ func (dto *ModuleDto) Validate() error {
 		return errors.New("course_id is required")
 	}
 
-	if dto.Order < 0 {
-		return errors.New("order must be greater than or equal to 0")
-	}
-
 	return nil
 }
 
@@ -53,7 +48,6 @@ func (dto *ModuleDto) ToEntity() *entities.Module {
 		Title:    dto.Title,
 		Slug:     dto.Slug,
 		CourseID: dto.CourseID,
-		Order:    dto.Order,
 		QuizID:   dto.QuizID,
 	}
 }

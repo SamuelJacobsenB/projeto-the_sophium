@@ -9,5 +9,18 @@ export * from "./entities/content";
 export * from "./entities/quiz";
 export * from "./entities/question";
 
+export * from "./dtos/user";
+export * from "./dtos/enrollment";
+export * from "./dtos/progress";
+export * from "./dtos/quiz_attempt";
+export * from "./dtos/course";
+export * from "./dtos/module";
+export * from "./dtos/content";
+export * from "./dtos/quiz";
+export * from "./dtos/question";
+export * from "./dtos/login";
+export * from "./dtos/change_password";
+
 export * from "./extension";
+export * from "./question_type";
 export * from "./role";
