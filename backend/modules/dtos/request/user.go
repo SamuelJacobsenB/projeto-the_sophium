@@ -14,7 +14,6 @@ type UserDto struct {
 	Password string  `json:"password"`
 	Phone    *string `json:"phone,omitempty"`
 	Bio      *string `json:"bio,omitempty"`
-	AvatarID *string `json:"avatar_id,omitempty"`
 }
 
 func (dto *UserDto) Validate() error {
@@ -56,6 +55,14 @@ func (dto *UserDto) Validate() error {
 		}
 	}
 
+	if dto.Bio != nil {
+		*dto.Bio = strings.TrimSpace(*dto.Bio)
+
+		if len(*dto.Bio) > 128 {
+			return errors.New("bio must be less than 128 characters")
+		}
+	}
+
 	return nil
 }
 
@@ -66,6 +73,5 @@ func (dto *UserDto) ToEntity() *entities.User {
 		Password: dto.Password,
 		Phone:    dto.Phone,
 		Bio:      dto.Bio,
-		AvatarID: dto.AvatarID,
 	}
 }

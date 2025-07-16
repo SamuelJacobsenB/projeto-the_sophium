@@ -42,7 +42,7 @@ a:hover {
 
 hr {
   width: 100%;
-  border: 2px solid var(--primary-color);
+  border: 1px solid;
 }
 
 .btn {
@@ -53,12 +53,17 @@ hr {
   border-radius: 5rem;
   cursor: pointer;
 }
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 .btn-primary {
   background-color: var(--primary-color);
   color: white;
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:disabled {
   background-color: var(--primary-hover);
 }
 
@@ -66,7 +71,8 @@ hr {
   background-color: var(--success-color);
   color: white;
 }
-.btn-success:hover {
+.btn-success:hover,
+.btn-success:disabled {
   background-color: var(--success-hover);
 }
 
@@ -74,7 +80,8 @@ hr {
   background-color: var(--danger-color);
   color: white;
 }
-.btn-danger:hover {
+.btn-danger:hover,
+.btn-danger:disabled {
   background-color: var(--danger-hover);
 }
 

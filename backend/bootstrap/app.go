@@ -47,7 +47,7 @@ func InitializeControllers(db *gorm.DB) *AppControllers {
 
 	fileController := controllers.NewFileController(fileService)
 	authController := controllers.NewAuthController(authService)
-	userController := controllers.NewUserController(userService)
+	userController := controllers.NewUserController(userService, fileService)
 	enrollmentController := controllers.NewEnrollmentController(enrollmentService)
 	progressController := controllers.NewProgressController(progressService, enrollmentService)
 	quizResultController := controllers.NewQuizResultController(quizResultService, enrollmentService)

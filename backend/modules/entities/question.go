@@ -13,7 +13,7 @@ type Question struct {
 	Statement    string             `json:"statement" gorm:"type:text;not null"`
 	Type         types.QuestionType `json:"type" gorm:"type:text;not null"`
 	FileID       *string            `json:"file_id,omitempty"`
-	File         *File              `json:"file,omitempty" gorm:"foreignKey:FileID"`
+	File         *File              `json:"file,omitempty" gorm:"foreignKey:FileID;constraint:OnDelete:CASCADE"`
 	Options      []string           `json:"options" gorm:"-"`
 	CorrectIndex *int               `json:"correct_index,omitempty"`
 	CreatedAt    time.Time          `json:"created_at"`

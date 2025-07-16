@@ -3,19 +3,31 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { App } from "./pages";
+import { Provider } from "./contexts";
+import { Message } from "./components";
+
+import { App, Login, Register, VerifyUser } from "./pages";
 
 import "./styles/index.css";
 import "./styles/fonts.css";
 import "./styles/variables.css";
-import { Message } from "./components";
-import { Provider } from "./contexts";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [],
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/:id/verify",
+    element: <VerifyUser />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

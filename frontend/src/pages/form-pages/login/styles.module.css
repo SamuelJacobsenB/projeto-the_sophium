@@ -1,0 +1,10 @@
+.loginTitle {
+  font-size: 2rem;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { I } from "../..";
@@ -7,8 +7,21 @@ import logo from "../../../assets/pngs/logo.png";
 
 import styles from "./styles.module.css";
 
-export function Navbar() {
+interface NavbarProps {
+  staticOpen?: boolean;
+}
+
+export function Navbar({ staticOpen = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, [staticOpen]);
+
+  useEffect(() => {
+    const status = sessionStorage.getItem("nav_open_status");
+    setIsOpen(status === "true");
+  }, []);
 
   return (
     <nav className={`${styles.navbar} ${isOpen ? styles.actived : ""}`}>
@@ -20,7 +33,10 @@ export function Navbar() {
         </div>
         <div className={styles.buttonSection}>
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => {
+              sessionStorage.setItem("nav_open_status", `${!isOpen}`);
+              setIsOpen(!staticOpen && !isOpen);
+            }}
             className={styles.circleButton}
           >
             <I.menu />

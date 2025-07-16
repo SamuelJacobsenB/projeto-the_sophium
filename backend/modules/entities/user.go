@@ -16,7 +16,7 @@ type User struct {
 	Bio               *string      `json:"bio,omitempty"`
 	Roles             []types.Role `json:"roles" gorm:"type:text[]"`
 	AvatarID          *string      `json:"avatar_id,omitempty"`
-	Avatar            *File        `json:"avatar,omitempty" gorm:"foreignKey:AvatarID"`
+	Avatar            *File        `json:"avatar,omitempty" gorm:"foreignKey:AvatarID;constraint:OnDelete:CASCADE"`
 	Enrollments       []Enrollment `json:"enrollments,omitempty" gorm:"foreignKey:UserID"`
 	VerificationToken *string      `json:"-" gorm:"not null,omitempty"`
 	TokenCreatedAt    *time.Time   `json:"-" gorm:"not null,omitempty"`

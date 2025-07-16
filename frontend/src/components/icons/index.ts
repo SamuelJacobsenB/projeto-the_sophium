@@ -3,12 +3,14 @@ import { FaGraduationCap, FaCheckCircle } from "react-icons/fa";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { IoMdInformationCircle } from "react-icons/io";
 import { BiSolidError } from "react-icons/bi";
+import { LuLoaderCircle } from "react-icons/lu";
 
 export const I = {
   close: IoClose,
   error: BiSolidError,
   graduation_hat: FaGraduationCap,
   information: IoMdInformationCircle,
+  loader: LuLoaderCircle,
   menu: IoMenu,
   success: FaCheckCircle,
   youtube: FaYoutube,

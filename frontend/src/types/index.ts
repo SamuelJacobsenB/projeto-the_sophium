@@ -20,6 +20,7 @@ export * from "./dtos/quiz";
 export * from "./dtos/question";
 export * from "./dtos/login";
 export * from "./dtos/change_password";
+export * from "./dtos/verify_user";
 
 export * from "./extension";
 export * from "./question_type";

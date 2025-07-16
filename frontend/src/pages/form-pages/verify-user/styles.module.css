@@ -1,0 +1,14 @@
+.verifyUserTitle {
+  font-size: 2rem;
+}
+
+.verifyUserDescription {
+  text-align: justify;
+}
+
+.verifyUserForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+}

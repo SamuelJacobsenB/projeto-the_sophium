@@ -1,0 +1,10 @@
+.registerTitle {
+  font-size: 2rem;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+}

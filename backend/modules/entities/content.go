@@ -12,7 +12,7 @@ type Content struct {
 	Title     string    `json:"title" gorm:"not null"`
 	VideoURL  *string   `json:"video_url,omitempty"`
 	FileID    *string   `json:"file_id,omitempty"`
-	File      *File     `json:"file,omitempty" gorm:"foreignKey:FileID"`
+	File      *File     `json:"file,omitempty" gorm:"foreignKey:FileID;constraint:OnDelete:CASCADE"`
 	HTML      *string   `json:"html" gorm:"type:text;not null"`
 	Order     int       `json:"order" gorm:"not null"`
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
