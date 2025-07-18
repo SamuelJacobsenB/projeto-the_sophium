@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func GenerateJwtToken(userID string, userRoles []types.Role) (string, error) {
+func GenerateJwtToken(userID string, userRoles types.Roles) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id":    userID,
 		"user_roles": userRoles,

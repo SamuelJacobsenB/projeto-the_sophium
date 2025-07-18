@@ -9,11 +9,13 @@ export function validateEmail(email: string): string[] {
     errors.push("Email muito longo");
   }
 
-  const regex =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  if (regex.test(email)) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+$/;
+  if (!regex.test(email)) {
     errors.push("Email inválido");
+  }
+
+  if (email.split("@").length !== 2) {
+    errors.push("Email deve conterapenar apenas um '@'");
   }
 
   return errors;

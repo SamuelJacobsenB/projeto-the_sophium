@@ -15,7 +15,7 @@ export function Message() {
       {type === "success" && <I.success className={styles.messageIcon} />}
       {type === "error" && <I.error className={styles.messageIcon} />}
       {type === "info" && <I.information className={styles.messageIcon} />}
-      <p className={styles.messageText}>Mensagem</p>
+      <p className={styles.messageText}>{message}</p>
       <button className={styles.messageClose} onClick={clearMessage}>
         <I.close />
       </button>

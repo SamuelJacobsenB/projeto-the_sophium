@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/entities"
@@ -42,7 +43,9 @@ func (service *UserService) Create(user *entities.User) error {
 		return err
 	}
 
-	user.VerificationToken = &hashToken
+	verification := hashToken
+	user.VerificationToken = &verification
+
 	now := time.Now()
 	user.TokenCreatedAt = &now
 
@@ -73,7 +76,11 @@ func (service *UserService) RequestPasswordChange(id string) error {
 		return err
 	}
 
-	user.VerificationToken = &hashedToken
+	fmt.Println(token, hashedToken)
+
+	verification := hashedToken
+	user.VerificationToken = &verification
+
 	now := time.Now()
 	user.TokenCreatedAt = &now
 
@@ -86,6 +93,7 @@ func (service *UserService) RequestPasswordChange(id string) error {
 
 func (service *UserService) VerifyToken(id, token string) error {
 	user, err := service.repository.FindByID(id)
+	fmt.Println(user)
 	if err != nil {
 		return err
 	}
@@ -106,11 +114,7 @@ func (service *UserService) VerifyToken(id, token string) error {
 		return errors.New("token is expired")
 	}
 
-	user.IsVerified = true
-	user.VerificationToken = nil
-	user.TokenCreatedAt = nil
-
-	if err := service.repository.Update(user, id); err != nil {
+	if err := service.repository.VerifyUserByID(id); err != nil {
 		return err
 	}
 

@@ -33,11 +33,19 @@ big {
   font-weight: 400;
 }
 
+p {
+  text-align: justify;
+}
+
 a {
   text-decoration: none;
 }
 a:hover {
   text-decoration: underline;
+}
+
+li {
+  list-style: none;
 }
 
 hr {
@@ -49,11 +57,26 @@ hr {
   text-align: center;
   text-transform: uppercase;
   font-family: var(--primary-font);
+  width: 100%;
   padding: 0.6rem 3rem;
   border-radius: 5rem;
   cursor: pointer;
 }
 .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-rounded {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  cursor: pointer;
+}
+.btn-rounded:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -83,6 +106,15 @@ hr {
 .btn-danger:hover,
 .btn-danger:disabled {
   background-color: var(--danger-hover);
+}
+
+.btn-info {
+  background-color: var(--info-color);
+  color: white;
+}
+.btn-info:hover,
+.btn-info:disabled {
+  background-color: var(--info-hover);
 }
 
 .hidden {

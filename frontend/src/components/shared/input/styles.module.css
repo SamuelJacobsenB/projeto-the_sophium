@@ -10,9 +10,9 @@
 .inputLabel {
   position: relative;
   display: inline-block;
+  color: var(--text-color);
   font-family: var(--secondary-font);
   font-weight: var(--font-weight-bold);
-  color: var(--text-color);
 }
 
 .inputRequired {
@@ -25,13 +25,13 @@
 }
 
 .input {
-  padding: 0.6rem 0.9rem;
-  border: 1px solid var(--secondary-color);
   background-color: white;
   color: var(--text-color);
   font-family: var(--secondary-font);
   font-size: 1rem;
   width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 2px solid var(--secondary-color);
   border-radius: 0.2rem;
   transition: border 0.2s ease, box-shadow 0.2s ease;
   outline: none;

@@ -14,6 +14,16 @@ func NewCourseRepository(db *gorm.DB) *CourseRepository {
 	return &CourseRepository{db}
 }
 
+func (repo *CourseRepository) FindAll() ([]*entities.Course, error) {
+	var courses []*entities.Course
+
+	if err := repo.db.Preload("File").Find(&courses).Error; err != nil {
+		return nil, err
+	}
+
+	return courses, nil
+}
+
 func (repo *CourseRepository) FindByID(id string) (*entities.Course, error) {
 	var course *entities.Course
 
@@ -37,7 +47,11 @@ func (repo *CourseRepository) FindBySlug(slug string) (*entities.Course, error) 
 func (repo *CourseRepository) Create(course *entities.Course) error {
 	course.ID = uuid.NewString()
 
-	return repo.db.Create(course).Error
+	if err := repo.db.Create(course).Error; err != nil {
+		return err
+	}
+
+	return repo.db.Preload("File").First(course, "id = ?", course.ID).Error
 }
 
 func (repo *CourseRepository) Update(course *entities.Course, id string) error {

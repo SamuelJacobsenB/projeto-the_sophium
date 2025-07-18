@@ -29,5 +29,5 @@ func (service *AuthService) Login(loginDTO *request.LoginDTO) (string, error) {
 		return "", err
 	}
 
-	return utils.GenerateToken(), nil
+	return utils.GenerateJwtToken(user.ID, user.Roles)
 }

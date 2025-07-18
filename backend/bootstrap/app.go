@@ -39,7 +39,7 @@ func InitializeControllers(db *gorm.DB) *AppControllers {
 	enrollmentService := services.NewEnrollmentService(enrollmentRepository, userRepository, courseRepository)
 	progressService := services.NewProgressService(progressRepository, enrollmentRepository, contentRepository)
 	quizResultService := services.NewQuizResultService(quizResultRepository, quizRepository, enrollmentRepository)
-	courseService := services.NewCourseService(courseRepository)
+	courseService := services.NewCourseService(courseRepository, fileRepository)
 	moduleService := services.NewModuleService(moduleRepository, courseRepository)
 	contentService := services.NewContentService(contentRepository, moduleRepository)
 	quizService := services.NewQuizService(quizRepository)

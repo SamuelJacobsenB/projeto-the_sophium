@@ -7,10 +7,15 @@ import (
 
 type CourseService struct {
 	repository *repositories.CourseRepository
+	fileRepo   *repositories.FileRepository
 }
 
-func NewCourseService(repository *repositories.CourseRepository) *CourseService {
-	return &CourseService{repository}
+func NewCourseService(repository *repositories.CourseRepository, fileRepo *repositories.FileRepository) *CourseService {
+	return &CourseService{repository, fileRepo}
+}
+
+func (service *CourseService) FindAll() ([]*entities.Course, error) {
+	return service.repository.FindAll()
 }
 
 func (service *CourseService) FindByID(id string) (*entities.Course, error) {
@@ -22,6 +27,14 @@ func (service *CourseService) FindBySlug(slug string) (*entities.Course, error) 
 }
 
 func (service *CourseService) Create(course *entities.Course) error {
+	if course.FileID != nil {
+		_, err := service.fileRepo.FindByID(*course.FileID)
+
+		if err != nil {
+			return err
+		}
+	}
+
 	return service.repository.Create(course)
 }
 

@@ -53,7 +53,7 @@ export function Navbar({ staticOpen = false }: NavbarProps) {
               </Link>
             </li>
             <li>
-              <Link to={"/#courses"} className={styles.routeLink}>
+              <Link to={"/courses"} className={styles.routeLink}>
                 Cursos
               </Link>
             </li>

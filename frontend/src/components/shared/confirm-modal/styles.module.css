@@ -1,0 +1,12 @@
+@import url("../../../styles/variables.css");
+
+.confirmModalError {
+  color: var(--danger-color);
+  font-size: 0.8rem;
+}
+
+.confirmModalButtons {
+  display: flex;
+  gap: 0.2rem;
+  width: 100%;
+}

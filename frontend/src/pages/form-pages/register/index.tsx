@@ -32,15 +32,18 @@ export function Register() {
     if (bio) bioErrors = validateBio(bio);
     let phoneErrors: string[] = [];
     if (phone) phoneErrors = validatePhone(phone);
-    setErrors([
+
+    const validationErrors = [
       ...nameErrors,
       ...emailErrors,
       ...passwordErrors,
       ...phoneErrors,
       ...bioErrors,
-    ]);
+    ];
 
-    if (errors.length > 0) return;
+    setErrors(validationErrors);
+
+    if (validationErrors.length > 0) return;
 
     await register({ name, email, password, bio, phone });
   }
@@ -53,7 +56,8 @@ export function Register() {
         onSubmit={handleRegister}
         submitText="Cadastrar"
         errors={errors}
-        className={styles.registerForm}
+        linkText="Ja possui uma conta? Entrar"
+        linkHref="/login"
       >
         <Input
           label="Nome"
@@ -79,6 +83,8 @@ export function Register() {
           placeholder="Digite sua senha"
           name="password"
           required
+          minLength={8}
+          maxLength={15}
           value={password}
           onChange={(evt) => setPassword(evt.target.value)}
         />
@@ -91,7 +97,7 @@ export function Register() {
         <Input
           label="Telefone"
           type="tel"
-          placeholder="Digite seu telefone"
+          placeholder="(xx) xxxxx-xxxx"
           name="phone"
           value={phone}
           onChange={(evt) => setPhone(evt.target.value)}

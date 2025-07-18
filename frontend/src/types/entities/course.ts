@@ -1,4 +1,4 @@
-import type { Module, Quiz } from "..";
+import type { Module, Quiz, File } from "..";
 
 export interface Course {
   id: string;

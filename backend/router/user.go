@@ -8,6 +8,7 @@ import (
 
 func RegisterUserRoutes(routerGroup *gin.RouterGroup, controller *controllers.UserController) {
 	routerGroup.GET("/:id", middlewares.SelfOrAdminMiddleware(), controller.FindByID)
+	routerGroup.GET("/own", middlewares.AuthMiddleware(nil), controller.FindOwnByID)
 	routerGroup.POST("/", controller.Create)
 	routerGroup.PATCH("/:id/request-password-change", controller.RequestPasswordChange)
 	routerGroup.PATCH("/:id/verify", controller.VerifyToken)

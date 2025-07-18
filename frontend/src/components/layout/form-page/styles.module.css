@@ -1,11 +1,12 @@
 .formPageMain {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   gap: 2rem;
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
   padding: 2rem;
   padding-left: 15%;
 }

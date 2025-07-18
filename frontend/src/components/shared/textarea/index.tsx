@@ -10,11 +10,11 @@ interface TextareaProps
 
 export function Textarea({ label, required, ...props }: TextareaProps) {
   return (
-    <div className={styles.inputContainer}>
+    <div className={styles.textareaContainer}>
       {label && (
-        <label htmlFor={props.id} className={styles.inputLabel}>
+        <label htmlFor={props.id} className={styles.textareaLabel}>
           {label}
-          {required && <span className={styles.inputRequired}>*</span>}
+          {required && <span className={styles.textareaRequired}>*</span>}
         </label>
       )}
       <textarea className={styles.textarea} required={required} {...props} />

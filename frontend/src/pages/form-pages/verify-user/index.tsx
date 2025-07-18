@@ -23,9 +23,11 @@ export function VerifyUser() {
     const idErrors: string[] = [];
     if (!id) idErrors.push("ID de usuário é obrigatório");
 
-    setErrors([...tokenErrors, ...idErrors]);
+    const validationErrors = [...tokenErrors, ...idErrors];
 
-    if (errors.length > 0) return;
+    setErrors(validationErrors);
+
+    if (validationErrors.length > 0) return;
     if (!id || !token) return;
 
     await verifyUser({ id, token });
@@ -37,12 +39,7 @@ export function VerifyUser() {
       <p className={styles.verifyUserDescription}>
         Um token de verificação foi enviado para o seu email, digite-o abaixo:
       </p>
-      <Form
-        onSubmit={handleVerifyUser}
-        submitText="Verificar"
-        errors={errors}
-        className={styles.verifyUserForm}
-      >
+      <Form onSubmit={handleVerifyUser} submitText="Verificar" errors={errors}>
         <Input
           label="Token"
           type="text"

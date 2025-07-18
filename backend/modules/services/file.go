@@ -47,9 +47,10 @@ func (service *FileService) Create(formFile *multipart.FileHeader) (*entities.Fi
 	}
 
 	fileName := fmt.Sprintf("%s.%s", file.ID, ext)
-	fullPath := filepath.Join(os.Getenv("BACKEND_URL"), "uploads", ext, fileName)
+	uploadPath := filepath.Join("uploads", ext, fileName)
+	fullPath := os.Getenv("BACKEND_URL") + "/" + uploadPath
 
-	if err := utils.SaveFile(formFile, fullPath); err != nil {
+	if err := utils.SaveFile(formFile, uploadPath); err != nil {
 		return nil, err
 	}
 

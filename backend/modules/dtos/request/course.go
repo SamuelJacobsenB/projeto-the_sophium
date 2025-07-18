@@ -24,20 +24,24 @@ func (dto *CourseDto) Validate() error {
 		return errors.New("title is required")
 	}
 
-	if len(dto.Title) > 100 {
-		return errors.New("title must be less than 100 characters")
+	if len(dto.Title) > 50 {
+		return errors.New("title must be less than 50 characters")
 	}
 
 	if dto.Slug == "" {
 		return errors.New("slug is required")
 	}
 
-	if len(dto.Slug) > 100 {
-		return errors.New("slug must be less than 100 characters")
+	if len(dto.Slug) > 50 {
+		return errors.New("slug must be less than 50 characters")
 	}
 
 	if dto.Description == "" {
 		return errors.New("description is required")
+	}
+
+	if len(dto.Description) > 1024 {
+		return errors.New("description must be less than 1024 characters")
 	}
 
 	return nil

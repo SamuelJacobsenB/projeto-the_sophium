@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useUser, useMessage } from "../../../contexts";
 import { useLogin } from "../../../hooks";
 import { Form, FormPage, Input } from "../../../components/";
 import { validateEmail, validatePassword } from "../../../validators";
@@ -7,7 +8,9 @@ import { validateEmail, validatePassword } from "../../../validators";
 import styles from "./styles.module.css";
 
 export function Login() {
+  const { findUser } = useUser();
   const { mutateAsync: login } = useLogin();
+  const { showMessage } = useMessage();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,11 +21,20 @@ export function Login() {
 
     const emailErrors = validateEmail(email);
     const passwordErrors = validatePassword(password);
-    setErrors([...emailErrors, ...passwordErrors]);
 
-    if (errors.length > 0) return;
+    const validationErrors = [...emailErrors, ...passwordErrors];
+
+    setErrors(validationErrors);
+
+    if (validationErrors.length > 0) return;
 
     await login({ email, password });
+
+    try {
+      await findUser();
+    } catch {
+      showMessage("Usuário não encontrado", "error");
+    }
   }
 
   return (
@@ -33,6 +45,8 @@ export function Login() {
         onSubmit={handleLogin}
         submitText="Entrar"
         errors={errors}
+        linkText="Não possui uma conta? Registrar"
+        linkHref="/register"
         className={styles.loginForm}
       >
         <Input

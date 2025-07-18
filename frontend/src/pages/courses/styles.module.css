@@ -3,7 +3,14 @@
   flex-direction: column;
   gap: 2rem;
   width: 100%;
+  min-height: calc(100vh - 64px);
   padding: 1rem 15%;
+}
+
+.courseAdminButton {
+  display: flex;
+  gap: 0.6rem;
+  width: fit-content !important;
 }
 
 .courseList {

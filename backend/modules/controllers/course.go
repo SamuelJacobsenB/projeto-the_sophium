@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/dtos/request"
+	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/dtos/response"
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/services"
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +15,21 @@ type CourseController struct {
 
 func NewCourseController(service *services.CourseService) *CourseController {
 	return &CourseController{service}
+}
+
+func (controller *CourseController) FindAll(ctx *gin.Context) {
+	courses, err := controller.service.FindAll()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	responseCourses := make([]response.CourseDTO, len(courses))
+	for i, course := range courses {
+		responseCourses[i] = *course.ToResponseDTO()
+	}
+
+	ctx.JSON(http.StatusOK, responseCourses)
 }
 
 func (controller *CourseController) FindByID(ctx *gin.Context) {

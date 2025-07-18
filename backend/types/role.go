@@ -1,5 +1,11 @@
 package types
 
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
+)
+
 type Role string
 
 const (
@@ -7,7 +13,7 @@ const (
 	ADMIN Role = "admin"
 )
 
-func ContainsRole(roles []Role, role Role) bool {
+func ContainsRole(roles Roles, role Role) bool {
 	for _, r := range roles {
 		if r == role {
 			return true
@@ -15,4 +21,18 @@ func ContainsRole(roles []Role, role Role) bool {
 	}
 
 	return false
+}
+
+type Roles []Role
+
+func (roles Roles) Value() (driver.Value, error) {
+	return json.Marshal(roles)
+}
+
+func (roles *Roles) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New("erro ao converter roles")
+	}
+	return json.Unmarshal(bytes, roles)
 }

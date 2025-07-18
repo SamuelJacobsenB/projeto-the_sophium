@@ -23,7 +23,7 @@ func SelfOrAdminMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		userRoles, ok := rolesRaw.([]types.Role)
+		userRoles, ok := rolesRaw.(types.Roles)
 		if !ok {
 			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "formato inválido de roles"})
 			return

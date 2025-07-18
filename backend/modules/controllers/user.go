@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/dtos/request"
@@ -27,6 +28,30 @@ func (controller *UserController) FindByID(ctx *gin.Context) {
 	user, err := controller.service.FindByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if user == nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user.ToResponseDTO())
+}
+
+func (controller *UserController) FindOwnByID(ctx *gin.Context) {
+	id := ctx.GetString("user_id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return
+	}
+
+	user, err := controller.service.FindByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if user == nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	}
 
@@ -145,12 +170,14 @@ func (controller *UserController) UpdateAvatar(ctx *gin.Context) {
 
 func (controller *UserController) VerifyToken(ctx *gin.Context) {
 	id := ctx.Param("id")
+	fmt.Println(id)
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
 		return
 	}
 
 	token := ctx.Query("token")
+	fmt.Println(token)
 	if token == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "token is required"})
 		return

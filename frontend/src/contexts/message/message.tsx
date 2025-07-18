@@ -43,4 +43,4 @@ function MessageProvider({ children }: MessageProviderProps) {
   );
 }
 
-export { MessageProvider, MessageContext };
+export { MessageContext, MessageProvider };

@@ -1,3 +1,27 @@
+.textareaContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1.2rem;
+}
+
+.textareaLabel {
+  position: relative;
+  display: inline-block;
+  font-family: var(--secondary-font);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+}
+
+.textareaRequired {
+  position: absolute;
+  top: 0;
+  right: -0.75rem;
+  font-size: 0.9rem;
+  color: var(--danger-color);
+  margin-left: 0.25rem;
+}
+
 .textarea {
   background-color: white;
   color: var(--text-color);
@@ -6,7 +30,7 @@
   width: 100%;
   min-height: 120px;
   padding: 0.6rem 0.9rem;
-  border: 1px solid var(--secondary-color);
+  border: 2px solid var(--secondary-color);
   border-radius: 0.2rem;
   transition: border 0.2s ease, box-shadow 0.2s ease;
   outline: none;

@@ -26,16 +26,26 @@ func (course *Course) ToResponseDTO() *response.CourseDTO {
 		responseModules[i] = *module.ToResponseDTO()
 	}
 
+	var fileDTO *response.FileDTO
+	if course.File != nil {
+		fileDTO = course.File.ToResponseDTO()
+	}
+
+	var quizDTO *response.QuizDTO
+	if course.Quiz != nil {
+		quizDTO = course.Quiz.ToResponseDTO()
+	}
+
 	return &response.CourseDTO{
 		ID:          course.ID,
 		Title:       course.Title,
 		Slug:        course.Slug,
 		Description: course.Description,
 		FileID:      course.FileID,
-		File:        course.File.ToResponseDTO(),
+		File:        fileDTO,
 		Modules:     responseModules,
 		QuizID:      course.QuizID,
-		Quiz:        course.Quiz.ToResponseDTO(),
+		Quiz:        quizDTO,
 		CreatedAt:   course.CreatedAt,
 		UpdatedAt:   course.UpdatedAt,
 	}

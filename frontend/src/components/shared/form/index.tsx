@@ -3,12 +3,15 @@ import { useState } from "react";
 import { Loader } from "../";
 
 import styles from "./styles.module.css";
+import { Link } from "react-router-dom";
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
   submitText: string;
   errors: string[];
   onSubmit: () => Promise<void> | void;
+  linkText?: string;
+  linkHref?: string;
 }
 
 export function Form({
@@ -17,6 +20,8 @@ export function Form({
   className,
   errors,
   onSubmit,
+  linkText,
+  linkHref,
   ...props
 }: FormProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,9 +45,19 @@ export function Form({
       {...props}
     >
       {children}
-      <button className="btn btn-primary" type="submit" disabled={isLoading}>
-        {isLoading ? <Loader /> : submitText}
-      </button>
+
+      <div className={styles.formActions}>
+        <button className="btn btn-primary" type="submit" disabled={isLoading}>
+          {isLoading ? <Loader /> : submitText}
+        </button>
+
+        {linkText && linkHref && (
+          <Link to={linkHref} className={styles.formLink}>
+            {linkText}
+          </Link>
+        )}
+      </div>
+
       <div className={styles.formErrors}>
         {errors.length > 0 &&
           errors.map((error) => <p className={styles.formError}>*{error}</p>)}

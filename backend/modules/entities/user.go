@@ -10,11 +10,11 @@ import (
 type User struct {
 	ID                string       `json:"id" gorm:"primaryKey"`
 	Name              string       `json:"name" gorm:"not null"`
-	Email             string       `json:"email" gorm:"uniqueIndex;not null"`
+	Email             string       `json:"email" gorm:"not null"`
 	Password          string       `json:"-" gorm:"not null"`
 	Phone             *string      `json:"phone,omitempty"`
 	Bio               *string      `json:"bio,omitempty"`
-	Roles             []types.Role `json:"roles" gorm:"type:text[]"`
+	Roles             types.Roles  `json:"roles" gorm:"type:jsonb"`
 	AvatarID          *string      `json:"avatar_id,omitempty"`
 	Avatar            *File        `json:"avatar,omitempty" gorm:"foreignKey:AvatarID;constraint:OnDelete:CASCADE"`
 	Enrollments       []Enrollment `json:"enrollments,omitempty" gorm:"foreignKey:UserID"`

@@ -3,15 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 import { useMessage } from "../../contexts";
 import { api } from "../../services";
+import { extractErrorMessage } from "../../utils";
 import type { User, UserDTO } from "../../types";
 
 export async function fetchRegister(userDTO: UserDTO) {
-  try {
-    const response = await api.post<User>("/api/v1/user", userDTO);
-    return response.data;
-  } catch {
-    throw new Error("Erro ao realizar cadastro");
-  }
+  const response = await api.post<User>("/api/v1/user", userDTO);
+  return response.data;
 }
 
 export function useRegister() {
@@ -25,8 +22,13 @@ export function useRegister() {
         "Cadastro realizado com sucesso, verifique seu email",
         "success"
       );
-      navigate(`/verify/user/${user.id}`);
+      navigate(`/${user.id}/verify`);
     },
-    onError: () => showMessage("Erro ao realizar cadastro", "error"),
+
+    onError: (error) => {
+      console.log(error);
+      const message = extractErrorMessage(error, "Erro ao realizar cadastro");
+      showMessage(message, "error");
+    },
   });
 }

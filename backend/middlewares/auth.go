@@ -39,26 +39,25 @@ func AuthMiddleware(roles []types.Role) gin.HandlerFunc {
 			return
 		}
 
-		rawRoles, ok := claims["roles"].([]interface{})
+		rawRoles, ok := claims["user_roles"].([]interface{})
 		if !ok {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token inválido"})
 			return
 		}
 
-		userRoles := make([]types.Role, len(rawRoles))
+		userRoles := make(types.Roles, len(rawRoles))
 		for i, role := range rawRoles {
 			userRoles[i] = types.Role(role.(string))
 		}
 
 		hasAllRoles := utils.HasAllRoles(roles, userRoles)
-
 		if !hasAllRoles {
 			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "usuário não tem permissão para acessar este recurso"})
 			return
 		}
 
-		if userID, ok := claims["user_id"].(float64); ok {
-			ctx.Set("user_id", uint(userID))
+		if userID, ok := claims["user_id"].(string); ok {
+			ctx.Set("user_id", userID)
 		}
 
 		ctx.Set("user_roles", userRoles)
