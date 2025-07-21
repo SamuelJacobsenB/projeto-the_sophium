@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { QueryObserverResult } from "@tanstack/react-query";
 
 import { useUpdateModule } from "../../../../hooks";
@@ -9,7 +9,7 @@ import type { Course, Module, ModuleDTO } from "../../../../types";
 import styles from "./styles.module.css";
 
 interface UpdateModuleModalProps {
-  module: Module;
+  module?: Module;
   isOpen: boolean;
   onClose: () => void;
   refetch: () => Promise<QueryObserverResult<Course, unknown>>;
@@ -23,11 +23,13 @@ export function UpdateModuleModal({
 }: UpdateModuleModalProps) {
   const { updateModule } = useUpdateModule();
 
-  const [title, setTitle] = useState(module.title);
-  const [slug, setSlug] = useState(module.slug);
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
 
   async function handleSubmit() {
+    if (!module) return;
+
     setErrors([]);
 
     const titleErrors = validateTitle(title);
@@ -54,6 +56,13 @@ export function UpdateModuleModal({
       console.log("Error to update course:", error);
     }
   }
+
+  useEffect(() => {
+    if (!module) return;
+
+    setTitle(module.title);
+    setSlug(module.slug);
+  }, [module]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

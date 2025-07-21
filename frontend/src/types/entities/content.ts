@@ -1,3 +1,5 @@
+import type { File } from "./file";
+
 export interface Content {
   id: string;
   module_id: string;

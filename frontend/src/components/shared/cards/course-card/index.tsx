@@ -18,7 +18,7 @@ export function CourseCard({
   onEdit,
   onDelete,
   isAdmin = false,
-  className,
+  className = "",
 }: CourseCardProps) {
   return (
     <div className={`${styles.courseCard} ${className}`}>

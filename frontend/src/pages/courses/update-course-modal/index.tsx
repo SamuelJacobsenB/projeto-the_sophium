@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { QueryObserverResult } from "@tanstack/react-query";
 
 import { useCreateFile, useDeleteFile, useUpdateCourse } from "../../../hooks";
@@ -13,7 +13,7 @@ import type { Course, CourseDTO } from "../../../types";
 import styles from "./styles.module.css";
 
 interface UpdateCourseModalProps {
-  course: Course;
+  course?: Course;
   isOpen: boolean;
   onClose: () => void;
   refetch: () => Promise<QueryObserverResult<Course[], unknown>>;
@@ -30,13 +30,15 @@ export function UpdateCourseModal({
   const { createFile } = useCreateFile();
   const { deleteFile } = useDeleteFile();
 
-  const [title, setTitle] = useState(course.title);
-  const [slug, setSlug] = useState(course.slug);
-  const [description, setDescription] = useState(course.description);
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
 
   async function handleSubmit() {
+    if (!course) return;
+
     setErrors([]);
 
     const titleErrors = validateTitle(title);
@@ -79,6 +81,14 @@ export function UpdateCourseModal({
       console.log("Error to update course:", error);
     }
   }
+
+  useEffect(() => {
+    if (!course) return;
+
+    setTitle(course.title);
+    setSlug(course.slug);
+    setDescription(course.description);
+  }, [course]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
