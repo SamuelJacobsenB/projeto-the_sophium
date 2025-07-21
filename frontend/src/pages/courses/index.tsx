@@ -15,6 +15,7 @@ import {
 import { CourseModal } from "./course-modal";
 
 import styles from "./styles.module.css";
+import { UpdateCourseModal } from "./update-course-modal";
 
 export function Courses() {
   const navigate = useNavigate();
@@ -23,8 +24,9 @@ export function Courses() {
   const { courses, isLoading, error, refetch } = useCourses();
   const { deleteCourse } = useDeleteCourse();
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,18 +35,12 @@ export function Courses() {
     isAdmin = true;
   }
 
-  function handleOpenConfirmModal(id: string) {
-    setSelectedCourseId(id);
-    setIsConfirmModalOpen(true);
-  }
-
   async function handleDeleteCourse() {
     if (!selectedCourseId) return;
 
     try {
       await deleteCourse(selectedCourseId);
-      setSelectedCourseId(null);
-      setIsConfirmModalOpen(false);
+      await refetch();
     } catch (error) {
       console.error("Erro ao excluir curso:", error);
     }
@@ -69,12 +65,23 @@ export function Courses() {
               onClose={() => setIsModalOpen(false)}
               refetch={refetch}
             />
+            <UpdateCourseModal
+              course={
+                courses!.find((course) => course.id === selectedCourseId)!
+              }
+              isOpen={isEditModalOpen}
+              onClose={() => {
+                setIsEditModalOpen(false);
+                setSelectedCourseId(null);
+              }}
+              refetch={refetch}
+            />
             <ConfirmModal
-              isOpen={isConfirmModalOpen}
+              isOpen={isDeleteModalOpen}
               fn={async () => await handleDeleteCourse()}
               actionName="Excluir curso"
               onClose={() => {
-                setIsConfirmModalOpen(false);
+                setIsDeleteModalOpen(false);
                 setSelectedCourseId(null);
               }}
             />
@@ -92,8 +99,14 @@ export function Courses() {
                 <CourseCard
                   course={course}
                   onClick={() => navigate(`/courses/${course.slug}/info`)}
-                  onEdit={() => {}}
-                  onDelete={() => handleOpenConfirmModal(course.id)}
+                  onEdit={() => {
+                    setSelectedCourseId(course.id);
+                    setIsEditModalOpen(true);
+                  }}
+                  onDelete={() => {
+                    setSelectedCourseId(course.id);
+                    setIsDeleteModalOpen(true);
+                  }}
                   isAdmin={isAdmin}
                 />
               </li>

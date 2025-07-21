@@ -1,4 +1,5 @@
 export * from "./useModuleById";
 export * from "./useCreateModule";
-export * from "./useDeleteModule";
+export * from "./useUpdateModule";
 export * from "./useChangeModuleOrder";
+export * from "./useDeleteModule";

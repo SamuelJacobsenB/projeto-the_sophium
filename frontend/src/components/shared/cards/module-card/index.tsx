@@ -8,8 +8,8 @@ import styles from "./styles.module.css";
 interface ModuleCardProps {
   module: Module;
   fetchModule: () => Promise<void>;
-  onEdit: () => Promise<void>;
-  onDelete: () => Promise<void>;
+  onEdit: () => void;
+  onDelete: () => void;
   onChangeOrder: (direction: Directon) => Promise<void>;
   isAdmin?: boolean;
 }
@@ -66,15 +66,12 @@ export function ModuleCard({
 
           {isAdmin && (
             <>
-              <button
-                className="btn-rounded btn-info"
-                onClick={async () => await onEdit()}
-              >
+              <button className="btn-rounded btn-info" onClick={() => onEdit()}>
                 <I.pencil />
               </button>
               <button
                 className="btn-rounded btn-danger"
-                onClick={async () => await onDelete()}
+                onClick={() => onDelete()}
               >
                 <I.trash />
               </button>

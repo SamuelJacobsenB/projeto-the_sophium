@@ -2,21 +2,42 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useUser } from "../../../contexts";
-import { useCourseBySlug, useModuleById } from "../../../hooks";
-import { DualPage, I, LoadPage, ModuleCard, Title } from "../../../components";
+import {
+  useChangeModuleOrder,
+  useCourseBySlug,
+  useDeleteModule,
+  useModuleById,
+} from "../../../hooks";
+import {
+  ConfirmModal,
+  DualPage,
+  I,
+  LoadPage,
+  ModuleCard,
+  Title,
+} from "../../../components";
 import { CreateModuleModal } from "./create-module-modal";
+import { UpdateModuleModal } from "./update-module-modal";
+import type { Directon } from "../../../types";
 
 import styles from "./styles.module.css";
 
 export function CourseInfo() {
   const navigate = useNavigate();
+  const { slug } = useParams() as { slug: string };
 
   const { user } = useUser();
-  const { slug } = useParams() as { slug: string };
   const { course, error, isLoading, refetch } = useCourseBySlug(slug);
+
   const { fetchModule } = useModuleById();
+  const { changeModuleOrder } = useChangeModuleOrder();
+  const { deleteModule } = useDeleteModule();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [selectedModuleId, setSelectedModuleId] = useState("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   let isAdmin = false;
   if (user && user.roles.includes("admin")) {
@@ -29,6 +50,42 @@ export function CourseInfo() {
     return null;
   }
   if (!course) return <LoadPage />;
+
+  async function handleChangeOrder(id: string, direction: Directon) {
+    const order = course!.modules.findIndex((module) => module.id === id);
+
+    try {
+      if (direction === "up") {
+        if (order === 0) return;
+        await changeModuleOrder(id);
+      } else {
+        if (order === course!.modules.length - 1) return;
+
+        const previosModule = course!.modules.find(
+          (module) => module.order === order + 1
+        );
+
+        if (!previosModule) return;
+
+        await changeModuleOrder(previosModule!.id);
+      }
+
+      refetch();
+    } catch (error) {
+      console.log("error to change order ", error);
+    }
+  }
+
+  async function handleDeleteModule() {
+    if (!selectedModuleId) return;
+
+    try {
+      await deleteModule(selectedModuleId);
+      await refetch();
+    } catch (error) {
+      console.log("error to delete module", error);
+    }
+  }
 
   return (
     <DualPage
@@ -70,6 +127,28 @@ export function CourseInfo() {
                   refetch={refetch}
                   courseId={course.id}
                 />
+                <UpdateModuleModal
+                  isOpen={isEditModalOpen}
+                  onClose={() => {
+                    setIsEditModalOpen(false);
+                    setSelectedModuleId("");
+                  }}
+                  module={
+                    course.modules.find(
+                      (module) => module.id === selectedModuleId
+                    )!
+                  }
+                  refetch={refetch}
+                />
+                <ConfirmModal
+                  isOpen={isDeleteModalOpen}
+                  onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setSelectedModuleId("");
+                  }}
+                  actionName="Excluir"
+                  fn={async () => await handleDeleteModule()}
+                />
               </>
             )}
             <div className={styles.modules}>
@@ -81,8 +160,17 @@ export function CourseInfo() {
                   <ModuleCard
                     module={module}
                     fetchModule={async () => fetchModule(module.id)}
-                    onEdit={async () => {}}
-                    onDelete={async () => {}}
+                    onEdit={() => {
+                      setIsEditModalOpen(true);
+                      setSelectedModuleId(module.id);
+                    }}
+                    onDelete={() => {
+                      setIsDeleteModalOpen(true);
+                      setSelectedModuleId(module.id);
+                    }}
+                    onChangeOrder={async (direction: Directon) =>
+                      await handleChangeOrder(module.id, direction)
+                    }
                     isAdmin={isAdmin}
                     key={module.id}
                   />
