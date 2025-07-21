@@ -13,9 +13,9 @@ import {
   Title,
 } from "../../components";
 import { CourseModal } from "./course-modal";
+import { UpdateCourseModal } from "./update-course-modal";
 
 import styles from "./styles.module.css";
-import { UpdateCourseModal } from "./update-course-modal";
 
 export function Courses() {
   const navigate = useNavigate();
@@ -24,22 +24,20 @@ export function Courses() {
   const { courses, isLoading, error, refetch } = useCourses();
   const { deleteCourse } = useDeleteCourse();
 
-  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isAdmin = user?.roles.includes("admin") ?? false;
 
-  let isAdmin = false;
-  if (user && user.roles.includes("admin")) {
-    isAdmin = true;
-  }
+  const courseToEdit = courses?.find((c) => c.id === activeCourseId) ?? null;
 
   async function handleDeleteCourse() {
-    if (!selectedCourseId) return;
+    if (!activeCourseId) return;
 
     try {
-      await deleteCourse(selectedCourseId);
+      await deleteCourse(activeCourseId);
       await refetch();
     } catch (error) {
       console.error("Erro ao excluir curso:", error);
@@ -49,70 +47,86 @@ export function Courses() {
   return (
     <>
       <Navbar />
+
       <section className={styles.courseSection} id="courses">
         <Title title="Nossos Cursos" size="2rem" />
+
         {isAdmin && (
           <>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setCreateModalOpen(true)}
               className={`btn btn-info ${styles.courseAdminButton}`}
             >
               <I.add_circle className={styles.courseAdminIcon} />
               Cadastrar Curso
             </button>
+
             <CourseModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
+              isOpen={isCreateModalOpen}
+              onClose={() => setCreateModalOpen(false)}
               refetch={refetch}
             />
-            <UpdateCourseModal
-              course={
-                courses!.find((course) => course.id === selectedCourseId)!
-              }
-              isOpen={isEditModalOpen}
-              onClose={() => {
-                setIsEditModalOpen(false);
-                setSelectedCourseId(null);
-              }}
-              refetch={refetch}
-            />
+
+            {courseToEdit && (
+              <UpdateCourseModal
+                course={courseToEdit}
+                isOpen={isEditModalOpen}
+                onClose={() => {
+                  setEditModalOpen(false);
+                  setActiveCourseId(null);
+                }}
+                refetch={refetch}
+              />
+            )}
+
             <ConfirmModal
               isOpen={isDeleteModalOpen}
-              fn={async () => await handleDeleteCourse()}
+              fn={handleDeleteCourse}
               actionName="Excluir curso"
               onClose={() => {
-                setIsDeleteModalOpen(false);
-                setSelectedCourseId(null);
+                setDeleteModalOpen(false);
+                setActiveCourseId(null);
               }}
             />
           </>
         )}
+
         <ul className={styles.courseList}>
           {isLoading && <Loader />}
           {error && <p>Houve um erro ao buscar os cursos: {error.message}</p>}
-          {courses && courses.length === 0 && <p>Nenhum curso encontrado</p>}
+          {!isLoading && courses?.length === 0 && (
+            <p>Nenhum curso encontrado</p>
+          )}
 
-          {courses &&
-            courses.length > 0 &&
-            courses.map((course) => (
-              <li key={course.id}>
-                <CourseCard
-                  course={course}
+          {courses?.map((course) => (
+            <li key={course.id}>
+              <CourseCard.Root>
+                <CourseCard.Image
+                  src={course.file?.path}
+                  alt={course.file?.name}
+                />
+                <CourseCard.Info
+                  title={course.title}
+                  description={course.description}
+                />
+                <CourseCard.Actions
                   onClick={() => navigate(`/courses/${course.slug}/info`)}
+                  isAdmin={isAdmin}
                   onEdit={() => {
-                    setSelectedCourseId(course.id);
-                    setIsEditModalOpen(true);
+                    setActiveCourseId(course.id);
+                    setEditModalOpen(true);
                   }}
                   onDelete={() => {
-                    setSelectedCourseId(course.id);
-                    setIsDeleteModalOpen(true);
+                    setActiveCourseId(course.id);
+                    setDeleteModalOpen(true);
                   }}
-                  isAdmin={isAdmin}
                 />
-              </li>
-            ))}
+              </CourseCard.Root>
+            </li>
+          ))}
         </ul>
       </section>
+
       <Footer />
     </>
   );

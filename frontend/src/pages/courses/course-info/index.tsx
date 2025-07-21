@@ -33,57 +33,55 @@ export function CourseInfo() {
   const { changeModuleOrder } = useChangeModuleOrder();
   const { deleteModule } = useDeleteModule();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [moduleOpenMap, setModuleOpenMap] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
-  const [selectedModuleId, setSelectedModuleId] = useState("");
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [activeModuleId, setActiveModuleId] = useState("");
+  const [isEditModuleModalOpen, setEditModuleModalOpen] = useState(false);
+  const [isDeleteModuleModalOpen, setDeleteModuleModalOpen] = useState(false);
 
-  let isAdmin = false;
-  if (user && user.roles.includes("admin")) {
-    isAdmin = true;
-  }
+  const isAdmin = user?.roles.includes("admin") ?? false;
 
-  if (isLoading) return <LoadPage />;
+  if (isLoading || !course) return <LoadPage />;
   if (error) {
     navigate("/");
     return null;
   }
-  if (!course) return <LoadPage />;
 
   async function handleChangeOrder(id: string, direction: Directon) {
-    const order = course!.modules.findIndex((module) => module.id === id);
+    if (!course) return;
+
+    const order = course.modules.findIndex((module) => module.id === id);
 
     try {
       if (direction === "up") {
         if (order === 0) return;
         await changeModuleOrder(id);
       } else {
-        if (order === course!.modules.length - 1) return;
+        if (order === course.modules.length - 1) return;
 
-        const previosModule = course!.modules.find(
-          (module) => module.order === order + 1
-        );
-
+        const previosModule = course.modules.find((m) => m.order === order + 1);
         if (!previosModule) return;
 
-        await changeModuleOrder(previosModule!.id);
+        await changeModuleOrder(previosModule.id);
       }
 
       refetch();
     } catch (error) {
-      console.log("error to change order ", error);
+      console.log("error changing module order", error);
     }
   }
 
   async function handleDeleteModule() {
-    if (!selectedModuleId) return;
+    if (!activeModuleId) return;
 
     try {
-      await deleteModule(selectedModuleId);
+      await deleteModule(activeModuleId);
       await refetch();
     } catch (error) {
-      console.log("error to delete module", error);
+      console.log("error deleting module", error);
     }
   }
 
@@ -111,70 +109,86 @@ export function CourseInfo() {
           <Title title={course.title} size="2.5rem" />
           <p>{course.description}</p>
           <div className={styles.infoContainer}>
-            <Title title="Módulos" size="2rem" />
+            <Title title="Módulos" size="2rem" />
             {isAdmin && (
               <>
                 <button
                   className={`btn btn-info ${styles.newModuleButton}`}
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => setCreateModalOpen(true)}
                 >
                   <I.add_circle />
-                  Novo módulo
+                  Novo módulo
                 </button>
+
                 <CreateModuleModal
-                  isOpen={isModalOpen}
-                  onClose={() => setIsModalOpen(false)}
+                  isOpen={isCreateModalOpen}
+                  onClose={() => setCreateModalOpen(false)}
                   refetch={refetch}
                   courseId={course.id}
                 />
+
                 <UpdateModuleModal
-                  isOpen={isEditModalOpen}
+                  isOpen={isEditModuleModalOpen}
                   onClose={() => {
-                    setIsEditModalOpen(false);
-                    setSelectedModuleId("");
+                    setEditModuleModalOpen(false);
+                    setActiveModuleId("");
                   }}
-                  module={
-                    course.modules.find(
-                      (module) => module.id === selectedModuleId
-                    )!
-                  }
+                  module={course.modules.find((m) => m.id === activeModuleId)!}
                   refetch={refetch}
                 />
+
                 <ConfirmModal
-                  isOpen={isDeleteModalOpen}
+                  isOpen={isDeleteModuleModalOpen}
                   onClose={() => {
-                    setIsDeleteModalOpen(false);
-                    setSelectedModuleId("");
+                    setDeleteModuleModalOpen(false);
+                    setActiveModuleId("");
                   }}
                   actionName="Excluir"
-                  fn={async () => await handleDeleteModule()}
+                  fn={handleDeleteModule}
                 />
               </>
             )}
+
             <div className={styles.modules}>
-              {(!course.modules || course.modules.length === 0) && (
-                <p>Nenhum módulo encontrado</p>
-              )}
-              {course.modules &&
+              {course.modules.length === 0 ? (
+                <p>Nenhum módulo encontrado</p>
+              ) : (
                 course.modules.map((module) => (
-                  <ModuleCard
-                    module={module}
-                    fetchModule={async () => fetchModule(module.id)}
-                    onEdit={() => {
-                      setIsEditModalOpen(true);
-                      setSelectedModuleId(module.id);
-                    }}
-                    onDelete={() => {
-                      setIsDeleteModalOpen(true);
-                      setSelectedModuleId(module.id);
-                    }}
-                    onChangeOrder={async (direction: Directon) =>
-                      await handleChangeOrder(module.id, direction)
-                    }
-                    isAdmin={isAdmin}
-                    key={module.id}
-                  />
-                ))}
+                  <ModuleCard.Root key={module.id}>
+                    <ModuleCard.Header>
+                      <ModuleCard.Info module={module} />
+                      <ModuleCard.Actions
+                        isOpen={moduleOpenMap[module.id] ?? false}
+                        toggleOpen={() => {
+                          setModuleOpenMap((prev) => ({
+                            ...prev,
+                            [module.id]: !prev[module.id],
+                          }));
+                        }}
+                        onEdit={() => {
+                          setEditModuleModalOpen(true);
+                          setActiveModuleId(module.id);
+                        }}
+                        onDelete={() => {
+                          setDeleteModuleModalOpen(true);
+                          setActiveModuleId(module.id);
+                        }}
+                        onChangeOrder={(direction) =>
+                          handleChangeOrder(module.id, direction)
+                        }
+                        isAdmin={isAdmin}
+                      />
+                    </ModuleCard.Header>
+
+                    <ModuleCard.Contents
+                      module={module}
+                      fetchModule={() => fetchModule(module.id)}
+                      isOpen={moduleOpenMap[module.id] ?? false}
+                      isAdmin={isAdmin}
+                    />
+                  </ModuleCard.Root>
+                ))
+              )}
             </div>
           </div>
         </>

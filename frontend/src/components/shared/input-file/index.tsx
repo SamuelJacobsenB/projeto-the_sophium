@@ -21,11 +21,11 @@ export function FileInput({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setPreview(URL.createObjectURL(file));
+      const fileUrl = URL.createObjectURL(file);
+      setPreview(fileUrl);
       onChange?.(file);
     }
   };
-
   return (
     <div className={styles.inputFileContainer}>
       {label && (
@@ -39,7 +39,7 @@ export function FileInput({
         ref={fileInputRef}
         id={id}
         type="file"
-        accept="image/*"
+        accept=".jpeg,.jpg,.png,.gif,.svg,.webp,.pdf,.doc,.docx,.ppt,.pptx,.txt"
         onChange={handleFileChange}
         required={required}
         style={{ display: "none" }}
@@ -54,7 +54,20 @@ export function FileInput({
       </button>
 
       {preview && (
-        <img src={preview} alt="Preview" className={styles.previewImage} />
+        <>
+          {fileInputRef.current?.files?.[0]?.type.startsWith("image/") ? (
+            <img src={preview} alt="Preview" className={styles.previewImage} />
+          ) : (
+            <div className={styles.filePreview}>
+              <p>
+                Arquivo selecionado: {fileInputRef.current?.files?.[0]?.name}
+              </p>
+              <a href={preview} target="_blank" rel="noopener noreferrer">
+                Abrir arquivo
+              </a>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

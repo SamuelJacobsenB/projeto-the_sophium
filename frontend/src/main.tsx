@@ -12,6 +12,8 @@ import "./styles/index.css";
 import "./styles/fonts.css";
 import "./styles/variables.css";
 
+import "react-quill/dist/quill.snow.css";
+
 const router = createBrowserRouter([
   {
     path: "/",
