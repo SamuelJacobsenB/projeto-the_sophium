@@ -15,7 +15,7 @@ export function useRegister() {
   const navigate = useNavigate();
   const { showMessage } = useMessage();
 
-  return useMutation({
+  const { mutateAsync: register } = useMutation({
     mutationFn: fetchRegister,
     onSuccess: (user: User) => {
       showMessage(
@@ -31,4 +31,6 @@ export function useRegister() {
       showMessage(message, "error");
     },
   });
+
+  return { register };
 }

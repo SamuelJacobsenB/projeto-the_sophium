@@ -1,4 +1,5 @@
 .courseSection {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -8,6 +9,9 @@
 }
 
 .courseAdminButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   display: flex;
   gap: 0.6rem;
   width: fit-content !important;
@@ -18,6 +22,12 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 1.2rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .courseAdminButton {
+    position: relative;
+  }
 }
 
 @media screen and (max-width: 480px) {

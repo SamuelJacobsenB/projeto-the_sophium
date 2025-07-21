@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 export function VerifyUser() {
   const { id } = useParams();
 
-  const { mutateAsync: verifyUser } = useVerifyUser();
+  const { verifyUser } = useVerifyUser();
 
   const [token, setToken] = useState("");
   const [errors, setErrors] = useState<string[]>([]);

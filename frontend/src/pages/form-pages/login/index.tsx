@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 
 export function Login() {
   const { findUser } = useUser();
-  const { mutateAsync: login } = useLogin();
+  const { login } = useLogin();
   const { showMessage } = useMessage();
 
   const [email, setEmail] = useState("");

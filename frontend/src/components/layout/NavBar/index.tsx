@@ -34,8 +34,9 @@ export function Navbar({ staticOpen = false }: NavbarProps) {
         <div className={styles.buttonSection}>
           <button
             onClick={() => {
+              if (staticOpen) return;
               sessionStorage.setItem("nav_open_status", `${!isOpen}`);
-              setIsOpen(!staticOpen && !isOpen);
+              setIsOpen(!isOpen);
             }}
             className={styles.circleButton}
           >

@@ -12,7 +12,7 @@ export async function fetchDeleteCourse(id: string) {
 export function useDeleteCourse() {
   const { showMessage } = useMessage();
 
-  return useMutation({
+  const { mutateAsync: deleteCourse } = useMutation({
     mutationFn: fetchDeleteCourse,
     onSuccess: () => {
       showMessage("Curso deletado com sucesso", "success");
@@ -22,4 +22,6 @@ export function useDeleteCourse() {
       showMessage(message, "error");
     },
   });
+
+  return { deleteCourse };
 }

@@ -12,7 +12,7 @@ type Course struct {
 	Slug        string    `json:"slug" gorm:"uniqueIndex"`
 	Description string    `json:"description" gorm:"type:text"`
 	FileID      *string   `json:"file_id,omitempty"`
-	File        *File     `json:"file,omitempty" gorm:"foreignKey:FileID;constraint:OnDelete:CASCADE"`
+	File        *File     `json:"file,omitempty" gorm:"foreignKey:FileID"`
 	Modules     []Module  `json:"modules,omitempty" gorm:"foreignKey:CourseID"`
 	QuizID      *string   `json:"quiz_id,omitempty"`
 	Quiz        *Quiz     `json:"quiz,omitempty" gorm:"foreignKey:QuizID;constraint:OnDelete:CASCADE"`

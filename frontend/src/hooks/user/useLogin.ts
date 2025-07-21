@@ -15,7 +15,7 @@ export function useLogin() {
   const navigate = useNavigate();
   const { showMessage } = useMessage();
 
-  return useMutation({
+  const { mutateAsync: login } = useMutation({
     mutationFn: fetchLogin,
     onSuccess: () => {
       showMessage("Login realizado com sucesso", "success");
@@ -26,4 +26,6 @@ export function useLogin() {
       showMessage(message, "error");
     },
   });
+
+  return { login };
 }

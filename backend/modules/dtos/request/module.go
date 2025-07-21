@@ -12,7 +12,6 @@ type ModuleDto struct {
 	Title    string  `json:"title"`
 	Slug     string  `json:"slug"`
 	CourseID string  `json:"course_id"`
-	QuizID   *string `json:"quiz_id,omitempty"`
 }
 
 func (dto *ModuleDto) Validate() error {
@@ -24,16 +23,16 @@ func (dto *ModuleDto) Validate() error {
 		return errors.New("title is required")
 	}
 
-	if len(dto.Title) > 100 {
-		return errors.New("title must be less than 100 characters")
+	if len(dto.Title) > 50 {
+		return errors.New("title must be less than 50 characters")
 	}
 
 	if dto.Slug == "" {
 		return errors.New("slug is required")
 	}
 
-	if len(dto.Slug) > 100 {
-		return errors.New("slug must be less than 100 characters")
+	if len(dto.Slug) > 50 {
+		return errors.New("slug must be less than 50 characters")
 	}
 
 	if dto.CourseID == "" {
@@ -48,6 +47,5 @@ func (dto *ModuleDto) ToEntity() *entities.Module {
 		Title:    dto.Title,
 		Slug:     dto.Slug,
 		CourseID: dto.CourseID,
-		QuizID:   dto.QuizID,
 	}
 }

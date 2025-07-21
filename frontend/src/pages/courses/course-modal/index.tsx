@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { QueryObserverResult } from "@tanstack/react-query";
 
 import { useMessage } from "../../../contexts";
 import { useCreateCourse, useCreateFile } from "../../../hooks";
@@ -8,19 +9,21 @@ import {
   validateSlug,
   validateTitle,
 } from "../../../validators";
+import type { Course } from "../../../types";
 
 import styles from "./styles.module.css";
 
 interface CourseModalProps {
   isOpen: boolean;
   onClose: () => void;
+  refetch: () => Promise<QueryObserverResult<Course[], unknown>>;
 }
 
-export function CourseModal({ isOpen, onClose }: CourseModalProps) {
+export function CourseModal({ isOpen, onClose, refetch }: CourseModalProps) {
   const { showMessage } = useMessage();
 
-  const { mutateAsync: createFile } = useCreateFile();
-  const { mutateAsync: createCourse } = useCreateCourse();
+  const { createFile } = useCreateFile();
+  const { createCourse } = useCreateCourse();
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -57,6 +60,8 @@ export function CourseModal({ isOpen, onClose }: CourseModalProps) {
         description,
         file_id: responseFile.id,
       });
+
+      await refetch();
 
       showMessage("Curso cadastrado com sucesso", "success");
       handleClose();

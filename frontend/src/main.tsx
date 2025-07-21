@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "./contexts";
 import { Message } from "./components";
 
-import { App, Courses, Login, Register, VerifyUser } from "./pages";
+import { App, CourseInfo, Courses, Login, Register, VerifyUser } from "./pages";
 
 import "./styles/index.css";
 import "./styles/fonts.css";
@@ -32,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/courses",
     element: <Courses />,
+  },
+  {
+    path: "/courses/:slug/info",
+    element: <CourseInfo />,
   },
 ]);
 

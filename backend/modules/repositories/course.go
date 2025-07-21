@@ -27,7 +27,7 @@ func (repo *CourseRepository) FindAll() ([]*entities.Course, error) {
 func (repo *CourseRepository) FindByID(id string) (*entities.Course, error) {
 	var course *entities.Course
 
-	if err := repo.db.Where("id = ?", id).Preload("File").Preload("Quiz").First(&course).Error; err != nil {
+	if err := repo.db.Where("id = ?", id).Preload("File").Preload("Modules").Preload("Quiz").First(&course).Error; err != nil {
 		return nil, err
 	}
 
@@ -37,7 +37,7 @@ func (repo *CourseRepository) FindByID(id string) (*entities.Course, error) {
 func (repo *CourseRepository) FindBySlug(slug string) (*entities.Course, error) {
 	var course *entities.Course
 
-	if err := repo.db.Where("slug = ?", slug).Preload("File").Preload("Quiz").First(&course).Error; err != nil {
+	if err := repo.db.Where("slug = ?", slug).Preload("File").Preload("Modules").Preload("Quiz").First(&course).Error; err != nil {
 		return nil, err
 	}
 

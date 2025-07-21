@@ -18,10 +18,11 @@ export function useCourses() {
     data: courses,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["courses"],
     queryFn: fetchCourses,
   });
 
-  return { courses, isLoading, error };
+  return { courses, isLoading, error, refetch };
 }

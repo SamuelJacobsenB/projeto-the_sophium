@@ -17,7 +17,7 @@ export function useVerifyUser() {
   const navigate = useNavigate();
   const { showMessage } = useMessage();
 
-  return useMutation({
+  const { mutateAsync: verifyUser } = useMutation({
     mutationFn: fetchVerifyUser,
     onSuccess: () => {
       showMessage("Usuário verificado com sucesso, faça o login", "success");
@@ -28,4 +28,6 @@ export function useVerifyUser() {
       showMessage(message, "error");
     },
   });
+
+  return { verifyUser };
 }

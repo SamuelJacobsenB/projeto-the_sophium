@@ -13,7 +13,7 @@ export async function fetchCreateCourse(courseDTO: CourseDTO) {
 export function useCreateCourse() {
   const { showMessage } = useMessage();
 
-  return useMutation({
+  const { mutateAsync: createCourse } = useMutation({
     mutationFn: fetchCreateCourse,
     onSuccess: () => {
       showMessage("Curso criado com sucesso", "success");
@@ -23,4 +23,6 @@ export function useCreateCourse() {
       showMessage(message, "error");
     },
   });
+
+  return { createCourse };
 }

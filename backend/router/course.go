@@ -10,7 +10,7 @@ import (
 func RegisterCourseRoutes(routerGroup *gin.RouterGroup, controller *controllers.CourseController) {
 	routerGroup.GET("/", controller.FindAll)
 	routerGroup.GET("/:id", controller.FindByID)
-	routerGroup.GET("/:id/slug", controller.FindBySlug)
+	routerGroup.GET("/slug/:slug", controller.FindBySlug)
 	routerGroup.POST("/", middlewares.AuthMiddleware([]types.Role{types.USER, types.ADMIN}), controller.Create)
 	routerGroup.PUT("/:id", middlewares.AuthMiddleware([]types.Role{types.USER, types.ADMIN}), controller.Update)
 	routerGroup.DELETE("/:id", middlewares.AuthMiddleware([]types.Role{types.USER, types.ADMIN}), controller.DeleteByID)

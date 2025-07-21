@@ -37,7 +37,11 @@ func (repo *ModuleRepository) FindBySlug(slug string) (*entities.Module, error) 
 func (repo *ModuleRepository) Create(module *entities.Module) error {
 	module.ID = uuid.NewString()
 
-	return repo.db.Create(module).Error
+	if err := repo.db.Create(module).Error; err != nil {
+		return err
+	}
+
+	return repo.db.Preload("Quiz").First(module, "id = ?", module.ID).Error
 }
 
 func (repo *ModuleRepository) Update(module *entities.Module, id string) error {

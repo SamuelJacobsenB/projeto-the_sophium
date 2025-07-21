@@ -43,5 +43,16 @@ func (service *CourseService) Update(course *entities.Course, id string) error {
 }
 
 func (service *CourseService) DeleteByID(id string) error {
+	course, err := service.repository.FindByID(id)
+	if err != nil {
+		return err
+	}
+
+	if course.FileID != nil {
+		if err := service.fileRepo.DeleteByID(*course.FileID); err != nil {
+			return err
+		}
+	}
+
 	return service.repository.DeleteByID(id)
 }

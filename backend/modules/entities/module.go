@@ -25,6 +25,11 @@ func (module *Module) ToResponseDTO() *response.ModuleDTO {
 		responseContents[i] = *content.ToResponseDTO()
 	}
 
+	var quizDTO *response.QuizDTO
+	if module.Quiz != nil {
+		quizDTO = module.Quiz.ToResponseDTO()
+	}
+
 	return &response.ModuleDTO{
 		ID:        module.ID,
 		Title:     module.Title,
@@ -33,7 +38,7 @@ func (module *Module) ToResponseDTO() *response.ModuleDTO {
 		Order:     module.Order,
 		Contents:  responseContents,
 		QuizID:    module.QuizID,
-		Quiz:      module.Quiz.ToResponseDTO(),
+		Quiz:      quizDTO,
 		CreatedAt: module.CreatedAt,
 		UpdatedAt: module.UpdatedAt,
 	}

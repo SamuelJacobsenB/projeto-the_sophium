@@ -16,11 +16,13 @@ export async function fetchCreateFile(file: File) {
 export function useCreateFile() {
   const { showMessage } = useMessage();
 
-  return useMutation({
+  const { mutateAsync: createFile } = useMutation({
     mutationFn: fetchCreateFile,
     onError: (error) => {
       const message = extractErrorMessage(error, "Erro ao criar arquivo");
       showMessage(message, "error");
     },
   });
+
+  return { createFile };
 }

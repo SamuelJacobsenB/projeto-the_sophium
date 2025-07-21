@@ -1,2 +1,9 @@
-export * from "./user";
-export * from "./course";
+export * from "./name";
+export * from "./email";
+export * from "./password";
+export * from "./bio";
+export * from "./phone";
+
+export * from "./title";
+export * from "./slug";
+export * from "./description";

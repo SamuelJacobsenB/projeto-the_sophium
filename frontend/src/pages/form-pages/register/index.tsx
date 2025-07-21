@@ -13,7 +13,7 @@ import {
 import styles from "./styles.module.css";
 
 export function Register() {
-  const { mutateAsync: register } = useRegister();
+  const { register } = useRegister();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

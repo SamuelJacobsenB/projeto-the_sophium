@@ -48,7 +48,9 @@ export function ConfirmModal({
       />
       {error && <p className={styles.confirmModalError}>*{error}</p>}
       <div className={styles.confirmModalButtons}>
-        <button className="btn btn-danger">Cancelar</button>
+        <button className="btn btn-danger" onClick={onClose}>
+          Cancelar
+        </button>
         <Button className="btn btn-success" onClick={handleConfirm}>
           Confirmar
         </Button>

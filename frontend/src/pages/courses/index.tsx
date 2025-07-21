@@ -20,8 +20,8 @@ export function Courses() {
   const navigate = useNavigate();
 
   const { user } = useUser();
-  const { courses, isLoading, error } = useCourses();
-  const { mutateAsync: deleteCourse } = useDeleteCourse();
+  const { courses, isLoading, error, refetch } = useCourses();
+  const { deleteCourse } = useDeleteCourse();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
@@ -67,6 +67,7 @@ export function Courses() {
             <CourseModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
+              refetch={refetch}
             />
             <ConfirmModal
               isOpen={isConfirmModalOpen}
@@ -90,7 +91,7 @@ export function Courses() {
               <li key={course.id}>
                 <CourseCard
                   course={course}
-                  onClick={() => navigate(`/courses/${course.id}`)}
+                  onClick={() => navigate(`/courses/${course.slug}/info`)}
                   onEdit={() => {}}
                   onDelete={() => handleOpenConfirmModal(course.id)}
                   isAdmin={isAdmin}

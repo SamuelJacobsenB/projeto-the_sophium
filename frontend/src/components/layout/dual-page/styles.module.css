@@ -1,0 +1,76 @@
+.dualPage {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 64px);
+}
+
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  background-color: white;
+  width: 20%;
+  min-height: calc(100vh - 64px);
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: white;
+  width: 80%;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 1024px) {
+  .dualPage {
+    flex-direction: column-reverse;
+  }
+
+  .sideBar {
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .contentContainer {
+    width: 100%;
+    border-bottom: 2px solid black;
+  }
+
+  .content {
+    width: 100%;
+    padding: 2rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dualPage {
+    flex-direction: column-reverse;
+    margin-top: 34px;
+  }
+
+  .sideBar {
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .content {
+    width: 100%;
+    padding: 2rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}

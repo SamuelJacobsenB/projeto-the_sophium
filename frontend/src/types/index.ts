@@ -25,5 +25,6 @@ export * from "./dtos/verify_user";
 export * from "./extension";
 export * from "./question_type";
 export * from "./role";
+export * from "./direction";
 
 export * from "./message_type";
