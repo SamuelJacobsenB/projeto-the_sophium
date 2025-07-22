@@ -1,59 +1,47 @@
 .jpeg {
-  background-color: #ffe5e5;
   color: #cc0000;
 }
 
 .jpg {
-  background-color: #fff0f0;
   color: #990000;
 }
 
 .png {
-  background-color: #e5f6ff;
   color: #0077cc;
 }
 
 .gif {
-  background-color: #fff3cc;
   color: #cc7700;
 }
 
 .svg {
-  background-color: #e5ffe5;
   color: #339933;
 }
 
 .webp {
-  background-color: #e5e5ff;
   color: #6633cc;
 }
 
 .pdf {
-  background-color: #ffeeee;
   color: #d00000;
 }
 
 .doc {
-  background-color: #e6f0ff;
   color: #0033cc;
 }
 
 .docx {
-  background-color: #d9e9ff;
   color: #0055cc;
 }
 
 .ppt {
-  background-color: #ffeedd;
   color: #cc4400;
 }
 
 .pptx {
-  background-color: #ffddcc;
   color: #dd5500;
 }
 
 .txt {
-  background-color: #f5f5f5;
   color: #333333;
 }

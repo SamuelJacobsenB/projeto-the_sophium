@@ -41,7 +41,7 @@ func InitializeControllers(db *gorm.DB) *AppControllers {
 	quizResultService := services.NewQuizResultService(quizResultRepository, quizRepository, enrollmentRepository)
 	courseService := services.NewCourseService(courseRepository, fileRepository)
 	moduleService := services.NewModuleService(moduleRepository, courseRepository)
-	contentService := services.NewContentService(contentRepository, moduleRepository)
+	contentService := services.NewContentService(contentRepository, moduleRepository, fileRepository)
 	quizService := services.NewQuizService(quizRepository)
 	questionService := services.NewQuestionService(questionRepository, quizRepository)
 
@@ -51,9 +51,9 @@ func InitializeControllers(db *gorm.DB) *AppControllers {
 	enrollmentController := controllers.NewEnrollmentController(enrollmentService)
 	progressController := controllers.NewProgressController(progressService, enrollmentService)
 	quizResultController := controllers.NewQuizResultController(quizResultService, enrollmentService)
-	courseController := controllers.NewCourseController(courseService)
+	courseController := controllers.NewCourseController(courseService, fileService)
 	moduleController := controllers.NewModuleController(moduleService)
-	contentController := controllers.NewContentController(contentService)
+	contentController := controllers.NewContentController(contentService, fileService)
 	quizController := controllers.NewQuizController(quizService)
 	questionController := controllers.NewQuestionController(questionService)
 

@@ -9,7 +9,7 @@ interface ModuleCardActionsProps {
   onEdit?: () => void;
   onDelete?: () => void;
   onChangeOrder?: (direction: Directon) => Promise<void>;
-  isAdmin?: boolean;
+  adminActions?: boolean;
 }
 
 export function ModuleCardActions({
@@ -18,7 +18,7 @@ export function ModuleCardActions({
   onEdit,
   onDelete,
   onChangeOrder,
-  isAdmin,
+  adminActions,
 }: ModuleCardActionsProps) {
   return (
     <div className={styles.moduleCardActions}>
@@ -26,7 +26,7 @@ export function ModuleCardActions({
         {isOpen ? <I.arrow_down /> : <I.arrow_up />}
       </Button>
 
-      {isAdmin && (
+      {adminActions && (
         <>
           <button className="btn-rounded btn-info" onClick={onEdit}>
             <I.pencil />

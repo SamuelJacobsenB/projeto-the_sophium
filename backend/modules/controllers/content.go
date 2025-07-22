@@ -9,11 +9,12 @@ import (
 )
 
 type ContentController struct {
-	service *services.ContentService
+	service     *services.ContentService
+	fileService *services.FileService
 }
 
-func NewContentController(service *services.ContentService) *ContentController {
-	return &ContentController{service}
+func NewContentController(service *services.ContentService, fileService *services.FileService) *ContentController {
+	return &ContentController{service, fileService}
 }
 
 func (controller *ContentController) FindByID(ctx *gin.Context) {
@@ -51,6 +52,41 @@ func (controller *ContentController) Create(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, content.ToResponseDTO())
+}
+
+func (controller *ContentController) UpdateFile(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return
+	}
+
+	formFile, err := ctx.FormFile("file")
+	if formFile == nil || err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
+		return
+	}
+
+	file, err := controller.fileService.Create(formFile)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	lastFileID, err := controller.service.UpdateFile(file, id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if lastFileID != "" {
+		if err := controller.fileService.DeleteByID(lastFileID); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "file updated successfully"})
 }
 
 func (controller *ContentController) Update(ctx *gin.Context) {

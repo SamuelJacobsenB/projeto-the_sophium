@@ -12,20 +12,26 @@ type Content struct {
 	Title     string    `json:"title" gorm:"not null"`
 	VideoURL  *string   `json:"video_url,omitempty"`
 	FileID    *string   `json:"file_id,omitempty"`
-	File      *File     `json:"file,omitempty" gorm:"foreignKey:FileID;constraint:OnDelete:CASCADE"`
-	HTML      *string   `json:"html" gorm:"type:text;not null"`
+	File      *File     `json:"file,omitempty" gorm:"foreignKey:FileID;constraint:OnDelete:SET NULL"`
+	HTML      *string   `json:"html" gorm:"type:text"`
 	Order     int       `json:"order" gorm:"not null"`
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"not null"`
 }
 
 func (content *Content) ToResponseDTO() *response.ContentDTO {
+	var fileDTO *response.FileDTO
+	if content.File != nil {
+		fileDTO = content.File.ToResponseDTO()
+	}
+
 	return &response.ContentDTO{
 		ID:        content.ID,
 		ModuleID:  content.ModuleID,
 		Title:     content.Title,
 		VideoURL:  content.VideoURL,
 		FileID:    content.FileID,
+		File:      fileDTO,
 		HTML:      content.HTML,
 		Order:     content.Order,
 		CreatedAt: content.CreatedAt,

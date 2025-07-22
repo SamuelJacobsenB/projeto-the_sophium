@@ -4,19 +4,19 @@ import type { Directon } from "../../../../types";
 import styles from "./styles.module.css";
 
 interface ContentCardActionsProps {
-  isAdmin?: boolean;
+  adminActions?: boolean;
   onEdit: () => void;
   onDelete: () => void;
   onChangeOrder: (direction: Directon) => Promise<void>;
 }
 
 export function ContentCardActions({
-  isAdmin,
+  adminActions,
   onEdit,
   onDelete,
   onChangeOrder,
 }: ContentCardActionsProps) {
-  if (!isAdmin) return null;
+  if (!adminActions) return null;
 
   return (
     <div className={styles.contentCardAdminActions}>

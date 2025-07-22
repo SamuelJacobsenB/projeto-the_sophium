@@ -38,6 +38,22 @@ func (service *CourseService) Create(course *entities.Course) error {
 	return service.repository.Create(course)
 }
 
+func (service *CourseService) UpdateFile(file *entities.File, id string) (string, error) {
+	course, err := service.repository.FindByID(id)
+	if err != nil {
+		return "", err
+	}
+
+	lastFileID := *course.FileID
+	course.FileID = &file.ID
+
+	if err := service.repository.Update(course, id); err != nil {
+		return "", err
+	}
+
+	return lastFileID, nil
+}
+
 func (service *CourseService) Update(course *entities.Course, id string) error {
 	return service.repository.Update(course, id)
 }

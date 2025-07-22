@@ -81,7 +81,7 @@ export function Courses() {
 
             <ConfirmModal
               isOpen={isDeleteModalOpen}
-              fn={handleDeleteCourse}
+              fn={async () => await handleDeleteCourse()}
               actionName="Excluir curso"
               onClose={() => {
                 setDeleteModalOpen(false);

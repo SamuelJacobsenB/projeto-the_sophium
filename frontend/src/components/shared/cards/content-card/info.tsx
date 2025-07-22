@@ -1,9 +1,9 @@
 import styles from "./styles.module.css";
 
 interface ContentCardInfoProps {
-  title: string;
+  children: React.ReactNode;
 }
 
-export function ContentCardInfo({ title }: ContentCardInfoProps) {
-  return <h3 className={styles.contentCardTitle}>{title}</h3>;
+export function ContentCardInfo({ children }: ContentCardInfoProps) {
+  return <div className={styles.contentCardInfo}>{children}</div>;
 }

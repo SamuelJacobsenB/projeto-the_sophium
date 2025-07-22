@@ -21,7 +21,6 @@ function UserProvider({ children }: UserProviderProps) {
   const findUser = useCallback(async () => {
     try {
       const { data } = await api.get<User>("/api/v1/user/own");
-      console.log(data);
       setUser(data);
     } catch {
       console.log("user not authenticated");

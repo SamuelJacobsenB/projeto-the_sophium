@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"fmt"
 
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/dtos/request"
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/services"
@@ -28,6 +29,8 @@ func (controller *ModuleController) FindByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	fmt.Println(module)
 
 	ctx.JSON(http.StatusOK, module.ToResponseDTO())
 }

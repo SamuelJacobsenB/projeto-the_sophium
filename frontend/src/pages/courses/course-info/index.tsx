@@ -6,7 +6,6 @@ import {
   useChangeModuleOrder,
   useCourseBySlug,
   useDeleteModule,
-  useModuleById,
 } from "../../../hooks";
 import {
   ConfirmModal,
@@ -29,7 +28,6 @@ export function CourseInfo() {
   const { user } = useUser();
   const { course, error, isLoading, refetch } = useCourseBySlug(slug);
 
-  const { fetchModule } = useModuleById();
   const { changeModuleOrder } = useChangeModuleOrder();
   const { deleteModule } = useDeleteModule();
 
@@ -133,7 +131,11 @@ export function CourseInfo() {
                     setEditModuleModalOpen(false);
                     setActiveModuleId("");
                   }}
-                  module={course.modules.find((m) => m.id === activeModuleId)!}
+                  module={
+                    course.modules
+                      ? course.modules.find((m) => m.id === activeModuleId)
+                      : undefined
+                  }
                   refetch={refetch}
                 />
 
@@ -150,7 +152,7 @@ export function CourseInfo() {
             )}
 
             <div className={styles.modules}>
-              {course.modules.length === 0 ? (
+              {!course.modules || course.modules.length === 0 ? (
                 <p>Nenhum módulo encontrado</p>
               ) : (
                 course.modules.map((module) => (
@@ -176,16 +178,18 @@ export function CourseInfo() {
                         onChangeOrder={(direction) =>
                           handleChangeOrder(module.id, direction)
                         }
-                        isAdmin={isAdmin}
+                        adminActions={isAdmin}
                       />
                     </ModuleCard.Header>
 
-                    <ModuleCard.Contents
-                      module={module}
-                      fetchModule={() => fetchModule(module.id)}
-                      isOpen={moduleOpenMap[module.id] ?? false}
-                      isAdmin={isAdmin}
-                    />
+                    {moduleOpenMap[module.id] && (
+                      <div className={styles.contentContainer}>
+                        <ModuleCard.InfoContents
+                          moduleId={module.id}
+                          isAdmin={isAdmin}
+                        />
+                      </div>
+                    )}
                   </ModuleCard.Root>
                 ))
               )}

@@ -66,19 +66,23 @@ func (service *FileService) Update(file *entities.File, id string) error {
 
 func (service *FileService) DeleteByID(id string) error {
 	file, err := service.repository.FindByID(id)
-
 	if err != nil {
 		return err
 	}
 
-	if err := service.repository.DeleteByID(id); err != nil {
+	fileName := fmt.Sprintf("%s.%s", file.ID, file.Extension)
+	relativePath := filepath.Join("uploads", string(file.Extension), fileName)
+
+	absPath, err := filepath.Abs(relativePath)
+	if err != nil {
+		return fmt.Errorf("falha ao resolver caminho absoluto: %w", err)
+	}
+
+	if err := os.Remove(absPath); err != nil {
 		return err
 	}
 
-	fileName := fmt.Sprintf("%s.%s", file.ID, file.Extension)
-	path := filepath.Join("../../uploads", string(file.Extension), fileName)
-
-	if err := os.Remove(path); err != nil {
+	if err := service.repository.DeleteByID(id); err != nil {
 		return err
 	}
 

@@ -1,32 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ReactQuill from "react-quill";
 
-import { useCreateContent, useCreateFile } from "../../../../../hooks";
+import { useUpdateContent, useUpdateContentFile } from "../../../../../hooks";
 import { FileInput, Form, Input, Modal } from "../../../";
 import { validateTitle } from "../../../../../validators";
-import type { ContentDTO } from "../../../../../types";
+import type { Content, ContentDTO } from "../../../../../types";
 
 import styles from "./styles.module.css";
 
 import "react-quill/dist/quill.snow.css";
 
-interface CreateContentModalProps {
+interface UpdateContentModalProps {
+  content?: Content;
   isOpen: boolean;
   onClose: () => void;
   refetch: () => Promise<void>;
-  moduleId: string;
 }
 
-export function CreateContentModal({
+export function UpdateContentModal({
+  content,
   isOpen,
   onClose,
   refetch,
-  moduleId,
-}: CreateContentModalProps) {
-  const { createContent } = useCreateContent();
-
-  const { createFile } = useCreateFile();
+}: UpdateContentModalProps) {
+  const { updateContent } = useUpdateContent();
+  const { updateContentFile } = useUpdateContentFile();
 
   const [title, setTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState<string>("");
@@ -35,6 +34,8 @@ export function CreateContentModal({
   const [error, setError] = useState<string[]>([]);
 
   async function handleSubmit() {
+    if (!content) return;
+
     setError([]);
 
     const titleErrors = validateTitle(title);
@@ -45,7 +46,7 @@ export function CreateContentModal({
     if (validationErrors.length > 0) return;
 
     const dto: ContentDTO = {
-      module_id: moduleId,
+      module_id: content.module_id,
       title,
       video_url: videoUrl || null,
       html: html || null,
@@ -54,12 +55,10 @@ export function CreateContentModal({
 
     try {
       if (file) {
-        const responseFile = await createFile(file);
-
-        dto.file_id = responseFile.id;
+        await updateContentFile({ id: content.id, file });
       }
 
-      await createContent(dto);
+      await updateContent({ dto, id: content.id });
       await refetch();
 
       handleClose();
@@ -78,11 +77,23 @@ export function CreateContentModal({
     onClose();
   }
 
+  useEffect(() => {
+    if (content) {
+      setTitle(content.title);
+      setVideoUrl(content.video_url || "");
+      setHtml(content.html || "");
+    }
+  }, [content]);
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
-      <h1 className={styles.modalTitle}>Cadastrar Conteúdo</h1>
+      <h1 className={styles.modalTitle}>Editar Conteúdo</h1>
       <hr />
-      <Form onSubmit={handleSubmit} submitText="Cadastrar" errors={error}>
+      <Form
+        onSubmit={handleSubmit}
+        submitText="Salvar alterações"
+        errors={error}
+      >
         <Input
           label="Título"
           type="text"

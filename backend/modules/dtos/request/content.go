@@ -19,9 +19,6 @@ func (dto *ContentDto) Validate() error {
 	dto.ModuleID = strings.TrimSpace(dto.ModuleID)
 	dto.Title = strings.TrimSpace(dto.Title)
 
-	html := strings.TrimSpace(*dto.HTML)
-	dto.HTML = &html
-
 	if dto.ModuleID == "" {
 		return errors.New("module_id is required")
 	}
@@ -34,8 +31,13 @@ func (dto *ContentDto) Validate() error {
 		return errors.New("title must be less than 50 characters")
 	}
 
-	if dto.HTML != nil && len(*dto.HTML) > 10000 {
-		return errors.New("html must be less than 10000 characters")
+	if dto.HTML != nil {
+		html := strings.TrimSpace(*dto.HTML)
+		dto.HTML = &html
+
+		if len(*dto.HTML) > 10000 {
+			return errors.New("html must be less than 10000 characters")
+		}
 	}
 
 	return nil

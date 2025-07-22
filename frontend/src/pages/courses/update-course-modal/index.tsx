@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { QueryObserverResult } from "@tanstack/react-query";
 
-import { useCreateFile, useDeleteFile, useUpdateCourse } from "../../../hooks";
+import { useUpdateCourse, useUpdateCourseFile } from "../../../hooks";
 import { FileInput, Form, Input, Modal } from "../../../components";
 import {
   validateTitle,
@@ -26,9 +26,7 @@ export function UpdateCourseModal({
   refetch,
 }: UpdateCourseModalProps) {
   const { updateCourse } = useUpdateCourse();
-
-  const { createFile } = useCreateFile();
-  const { deleteFile } = useDeleteFile();
+  const { updateCourseFile } = useUpdateCourseFile();
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -55,22 +53,16 @@ export function UpdateCourseModal({
 
     if (validationErrors.length > 0) return;
 
+    const dto: CourseDTO = {
+      title,
+      slug,
+      description,
+      file_id: null,
+    };
+
     try {
-      const dto: CourseDTO = {
-        title,
-        slug,
-        description,
-        file_id: null,
-      };
-
       if (file) {
-        const responseFile = await createFile(file);
-
-        if (course.file_id) {
-          await deleteFile(course.file_id);
-        }
-
-        dto.file_id = responseFile.id;
+        await updateCourseFile({ id: course.id, file });
       }
 
       await updateCourse({ dto, id: course.id });

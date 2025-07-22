@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { api } from "../../services";
@@ -8,15 +7,14 @@ import type { Module } from "../../types";
 export async function fetchModuleById(id: string) {
   try {
     const response = await api.get<Module>(`/api/v1/module/${id}`);
+    console.log(response);
     return response.data;
   } catch (error) {
     throw new Error(extractErrorMessage(error, "Erro ao buscar módulo"));
   }
 }
 
-export function useModuleById() {
-  const [id, setId] = useState("");
-
+export function useModuleById(id: string) {
   const {
     data: module,
     isLoading,
@@ -24,14 +22,8 @@ export function useModuleById() {
     refetch,
   } = useQuery({
     queryKey: ["module", id],
-    queryFn: id ? async () => await fetchModuleById(id) : undefined,
-    enabled: false,
+    queryFn: async () => await fetchModuleById(id),
   });
 
-  async function fetchModule(id: string) {
-    setId(id);
-    await refetch();
-  }
-
-  return { module, isLoading, error, fetchModule };
+  return { module, isLoading, error, refetch };
 }

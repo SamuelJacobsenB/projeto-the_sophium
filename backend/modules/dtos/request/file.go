@@ -39,6 +39,7 @@ func (dto *FileDto) Validate() error {
 		return errors.New("size is required")
 	}
 
+
 	return nil
 }
 
