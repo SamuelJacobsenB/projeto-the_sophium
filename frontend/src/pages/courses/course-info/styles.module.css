@@ -40,6 +40,10 @@
   font-size: 1.2rem;
 }
 
+.sideBarEnrollButton {
+  width: 80% !important;
+}
+
 .infoContainer {
   position: relative;
   display: flex;

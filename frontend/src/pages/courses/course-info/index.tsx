@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useUser } from "../../../contexts";
+import { useMessage, useUser } from "../../../contexts";
 import {
   useChangeModuleOrder,
   useCourseBySlug,
+  useCreateEnrollment,
   useDeleteModule,
+  useVerifyUserEnrollment,
 } from "../../../hooks";
 import {
+  Button,
   ConfirmModal,
   DualPage,
   I,
@@ -25,8 +28,15 @@ export function CourseInfo() {
   const navigate = useNavigate();
   const { slug } = useParams() as { slug: string };
 
+  const { showMessage } = useMessage();
+
   const { user } = useUser();
   const { course, error, isLoading, refetch } = useCourseBySlug(slug);
+
+  const { createEnrollment } = useCreateEnrollment();
+  const { isEnrolled, checkEnrollment } = useVerifyUserEnrollment(
+    course?.id || ""
+  );
 
   const { changeModuleOrder } = useChangeModuleOrder();
   const { deleteModule } = useDeleteModule();
@@ -46,6 +56,24 @@ export function CourseInfo() {
   if (error) {
     navigate("/");
     return null;
+  }
+
+  async function handleCreateEnrollment() {
+    if (!course || !user) {
+      showMessage("Erro ao realizar matrícula", "error");
+      return;
+    }
+
+    try {
+      await createEnrollment({
+        user_id: user.id,
+        course_id: course.id,
+      });
+
+      checkEnrollment();
+    } catch (error) {
+      console.log("error creating enrollment", error);
+    }
   }
 
   async function handleChangeOrder(id: string, direction: Directon) {
@@ -92,6 +120,21 @@ export function CourseInfo() {
             alt={course.file?.name}
             className={styles.sideBarImage}
           />
+          {isEnrolled ? (
+            <Button
+              className={`btn btn-info ${styles.sideBarEnrollButton}`}
+              onClick={() => navigate(`/courses/${slug}/enrolled`)}
+            >
+              Acessar curso
+            </Button>
+          ) : (
+            <Button
+              className={`btn btn-info ${styles.sideBarEnrollButton}`}
+              onClick={async () => await handleCreateEnrollment()}
+            >
+              Matricular-se
+            </Button>
+          )}
           <div className={styles.sideBarContent}>
             <h1 className={styles.sideBarTitle}>{course.title}</h1>
             <small className={styles.sideBarSlug}>{course.slug}</small>

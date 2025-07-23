@@ -6,19 +6,19 @@ import { api } from "../../services";
 import { extractErrorMessage } from "../../utils";
 import type { VerifyUser } from "../../types";
 
-export async function fetchVerifyUser({ id, token }: VerifyUser) {
+export async function fetchVerifyUserAccount({ id, token }: VerifyUser) {
   const response = await api.patch<string>(
     `/api/v1/user/${id}/verify?token=${token}`
   );
   return response.data;
 }
 
-export function useVerifyUser() {
+export function useVerifyUserAccount() {
   const navigate = useNavigate();
   const { showMessage } = useMessage();
 
-  const { mutateAsync: verifyUser } = useMutation({
-    mutationFn: fetchVerifyUser,
+  const { mutateAsync: verifyUserAccount } = useMutation({
+    mutationFn: fetchVerifyUserAccount,
     onSuccess: () => {
       showMessage("Usuário verificado com sucesso, faça o login", "success");
       navigate("/login");
@@ -29,5 +29,5 @@ export function useVerifyUser() {
     },
   });
 
-  return { verifyUser };
+  return { verifyUserAccount };
 }

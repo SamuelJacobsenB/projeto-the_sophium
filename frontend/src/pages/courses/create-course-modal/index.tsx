@@ -13,13 +13,17 @@ import type { Course } from "../../../types";
 
 import styles from "./styles.module.css";
 
-interface CourseModalProps {
+interface CreateCourseModalProps {
   isOpen: boolean;
   onClose: () => void;
   refetch: () => Promise<QueryObserverResult<Course[], unknown>>;
 }
 
-export function CourseModal({ isOpen, onClose, refetch }: CourseModalProps) {
+export function CreateCourseModal({
+  isOpen,
+  onClose,
+  refetch,
+}: CreateCourseModalProps) {
   const { showMessage } = useMessage();
 
   const { createFile } = useCreateFile();

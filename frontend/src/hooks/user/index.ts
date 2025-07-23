@@ -1,3 +1,3 @@
 export * from "./useRegister";
-export * from "./useVerifyUser";
+export * from "./useVerifyUserAccount";
 export * from "./useLogin";

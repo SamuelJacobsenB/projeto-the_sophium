@@ -12,7 +12,7 @@ import {
   Navbar,
   Title,
 } from "../../components";
-import { CourseModal } from "./course-modal";
+import { CreateCourseModal } from "./create-course-modal";
 import { UpdateCourseModal } from "./update-course-modal";
 
 import styles from "./styles.module.css";
@@ -61,7 +61,7 @@ export function Courses() {
               Cadastrar Curso
             </button>
 
-            <CourseModal
+            <CreateCourseModal
               isOpen={isCreateModalOpen}
               onClose={() => setCreateModalOpen(false)}
               refetch={refetch}

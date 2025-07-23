@@ -39,10 +39,7 @@ func (service *EnrollmentService) Create(enrollment *entities.Enrollment) error 
 	}
 
 	enrollmentExists, err := service.repository.FindByUserAndCourse(enrollment.UserID, enrollment.CourseID)
-	if err != nil {
-		return err
-	}
-	if enrollmentExists != nil {
+	if enrollmentExists != nil || err == nil {
 		return errors.New("user already enrolled in this course")
 	}
 

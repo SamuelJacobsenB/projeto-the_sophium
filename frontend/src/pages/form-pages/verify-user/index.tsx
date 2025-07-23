@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { useVerifyUser } from "../../../hooks";
+import { useVerifyUserAccount } from "../../../hooks";
 import { Form, FormPage, Input } from "../../../components/";
 
 import styles from "./styles.module.css";
@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 export function VerifyUser() {
   const { id } = useParams();
 
-  const { verifyUser } = useVerifyUser();
+  const { verifyUserAccount } = useVerifyUserAccount();
 
   const [token, setToken] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
@@ -30,7 +30,7 @@ export function VerifyUser() {
     if (validationErrors.length > 0) return;
     if (!id || !token) return;
 
-    await verifyUser({ id, token });
+    await verifyUserAccount({ id, token });
   }
 
   return (

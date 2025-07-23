@@ -7,7 +7,7 @@ import {
   FaFilePdf,
   FaFileImage,
 } from "react-icons/fa";
-import { IoAddCircle, IoClose, IoMenu } from "react-icons/io5";
+import { IoAddCircle, IoChevronBack, IoClose, IoMenu } from "react-icons/io5";
 import {
   IoMdInformationCircle,
   IoIosMore,
@@ -31,6 +31,7 @@ import { MdContentPaste } from "react-icons/md";
 export const I = {
   add_circle: IoAddCircle,
   arrow_down: IoIosArrowDown,
+  arrow_left: IoChevronBack,
   arrow_up: IoIosArrowUp,
   calendar: FaCalendarAlt,
   close: IoClose,

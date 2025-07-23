@@ -1,3 +1,5 @@
+@import url("../../../../styles/variables.css");
+
 .moduleCardContainer {
   background-color: #fff;
   border: 1px solid #e5e5e5;
@@ -66,6 +68,15 @@
   flex-direction: column;
   gap: 0.8rem;
   width: 100%;
+}
+
+.activeContent {
+  border: 2px solid var(--primary-color);
+}
+.activeContent:hover {
+  border: 2px solid var(--primary-color);
+  cursor: default;
+  transform: scale(1);
 }
 
 @keyframes fadeIn {
