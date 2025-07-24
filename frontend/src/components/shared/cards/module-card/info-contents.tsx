@@ -138,7 +138,7 @@ export function ModuleCardInfoContents({
         <ul className={styles.moduleCardContentList}>
           {contents.map((content) => (
             <li key={content.id}>
-              <ContentCard.Root onClick={() => {}}>
+              <ContentCard.Root>
                 <ContentCard.Info>
                   <ContentCard.IconArea content={content} />
                   <ContentCard.Title title={content.title} />

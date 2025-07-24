@@ -101,7 +101,13 @@ func (controller *ProgressController) DeleteByID(ctx *gin.Context) {
 		return
 	}
 
-	enrollment, err := controller.enrollmentService.FindByID(id)
+	progress, err := controller.service.FindByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	enrollment, err := controller.enrollmentService.FindByID(progress.EnrollmentID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

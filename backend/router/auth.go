@@ -11,4 +11,5 @@ func RegisterAuthRoutes(routerGroup *gin.RouterGroup, controller *controllers.Au
 	routerGroup.GET("/verify/user", middlewares.AuthMiddleware(nil), controller.VerifyUser)
 	routerGroup.GET("/verify/admin", middlewares.AuthMiddleware([]types.Role{types.USER, types.ADMIN}), controller.VerifyAdmin)
 	routerGroup.POST("/login", controller.Login)
+	routerGroup.POST("/logout", middlewares.AuthMiddleware(nil), controller.Logout)
 }

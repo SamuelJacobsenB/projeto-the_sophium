@@ -34,6 +34,11 @@ func (controller *AuthController) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }
 
+func (controller *AuthController) Logout(ctx *gin.Context) {
+    ctx.SetCookie("access_token", "", -1, "/", os.Getenv("HOST"), false, true)
+    ctx.JSON(http.StatusOK, gin.H{"message": "Logout realizado com sucesso"})
+}
+
 func (controller *AuthController) VerifyUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "user verified successfully"})
 }

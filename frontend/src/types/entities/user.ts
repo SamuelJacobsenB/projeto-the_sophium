@@ -1,4 +1,4 @@
-import type { Role, Enrollment } from "../";
+import type { Role, Enrollment, File } from "../";
 
 export interface User {
   id: string;

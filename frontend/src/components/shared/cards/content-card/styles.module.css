@@ -1,3 +1,5 @@
+@import url("../../../../styles/variables.css");
+
 .contentCard {
   display: flex;
   align-items: center;
@@ -34,6 +36,7 @@
 }
 
 .contentCardInfo {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -48,4 +51,10 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
+}
+
+.contentCardCheckButton {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  cursor: pointer;
 }

@@ -57,6 +57,12 @@
   gap: 1rem;
 }
 
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .routeList {
   display: flex;
   align-items: center;
@@ -72,13 +78,81 @@
   text-decoration: none;
 }
 
+.avatarImg {
+  width: 3.2rem;
+  height: 3.2rem;
+  padding: 0;
+  object-fit: cover;
+  border-radius: 100%;
+  border: 1px solid var(--secondary-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.avatarIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.avatarImg:hover,
+.avatarIcon:hover {
+  transform: scale(1.1);
+}
+
+.userProfileMenu {
+  z-index: 3;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background-color: white;
+  width: 100%;
+  max-width: 300px;
+  padding: 1rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.userProfileLink,
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  font-family: var(--primary-font);
+  color: black;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.userProfileItemIcon {
+  font-size: 1.4rem;
+}
+
+.userProfileLink:hover {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.logoutButton:hover {
+  background-color: var(--danger-color);
+  color: white;
+}
+
 @media (max-width: 768px) {
   .navbar {
     transition: none;
   }
 
   .routeList {
-    z-index: 10;
+    z-index: 2;
     position: absolute;
     top: 100%;
     left: 0;
@@ -88,5 +162,14 @@
     width: 100%;
     padding: 1rem;
     transition: height 0.3s ease-in-out;
+  }
+
+  .userProfile {
+    position: relative;
+  }
+
+  .userProfileMenu {
+    position: absolute;
+    min-width: 50vw;
   }
 }

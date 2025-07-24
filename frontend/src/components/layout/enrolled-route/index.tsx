@@ -22,7 +22,7 @@ export function EnrolledRoute({ children, courseId }: PrivateRouteProps) {
     if (!isLoading && (!isVerified || error)) {
       showMessage("Usuário deve estar logado", "error");
       navigate("/login");
-    } else if (!isLoading && isVerified && isEnrolled === null) {
+    } else if (!isLoading && isVerified && isEnrolled === false) {
       showMessage("Usuário deve estar matriculado no curso", "error");
       navigate(`/courses`);
     }

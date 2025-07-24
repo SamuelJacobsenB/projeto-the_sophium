@@ -7,12 +7,20 @@ import {
   FaFilePdf,
   FaFileImage,
 } from "react-icons/fa";
-import { IoAddCircle, IoChevronBack, IoClose, IoMenu } from "react-icons/io5";
+import {
+  IoAddCircle,
+  IoChevronBack,
+  IoClose,
+  IoLogOut,
+  IoMenu,
+  IoPersonCircleSharp,
+} from "react-icons/io5";
 import {
   IoMdInformationCircle,
   IoIosMore,
   IoIosArrowUp,
   IoIosArrowDown,
+  IoIosCheckbox,
 } from "react-icons/io";
 import {
   BiSolidError,
@@ -26,7 +34,7 @@ import { BsFiletypeSvg, BsFiletypeDocx, BsFiletypePptx } from "react-icons/bs";
 import { SiJpeg } from "react-icons/si";
 import { LuLoaderCircle } from "react-icons/lu";
 import { RiFilePpt2Fill } from "react-icons/ri";
-import { MdContentPaste } from "react-icons/md";
+import { MdCheckBoxOutlineBlank, MdContentPaste } from "react-icons/md";
 
 export const I = {
   add_circle: IoAddCircle,
@@ -34,6 +42,7 @@ export const I = {
   arrow_left: IoChevronBack,
   arrow_up: IoIosArrowUp,
   calendar: FaCalendarAlt,
+  check: IoIosCheckbox,
   close: IoClose,
   content: MdContentPaste,
   doc: BiSolidFileDoc,
@@ -46,6 +55,7 @@ export const I = {
   jpeg: SiJpeg,
   jpg: BiSolidFileJpg,
   loader: LuLoaderCircle,
+  logout: IoLogOut,
   menu: IoMenu,
   more: IoIosMore,
   pdf: FaFilePdf,
@@ -57,5 +67,7 @@ export const I = {
   svg: BsFiletypeSvg,
   trash: FaTrashAlt,
   txt: BiSolidFileTxt,
+  uncheck: MdCheckBoxOutlineBlank,
+  user_profile: IoPersonCircleSharp,
   youtube: FaYoutube,
 };
