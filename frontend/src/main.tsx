@@ -12,6 +12,7 @@ import {
   Courses,
   Enrollment,
   Login,
+  Profile,
   Register,
   VerifyUser,
 } from "./pages";
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: "/courses/:slug/enrolled",
     element: <Enrollment />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 

@@ -78,6 +78,10 @@
   text-decoration: none;
 }
 
+.userProfile {
+  position: relative;
+}
+
 .avatarImg {
   width: 3.2rem;
   height: 3.2rem;
@@ -111,7 +115,7 @@
   flex-direction: column;
   gap: 0.6rem;
   background-color: white;
-  width: 100%;
+  width: 80vw;
   max-width: 300px;
   padding: 1rem;
   border-radius: 0.4rem;
@@ -162,14 +166,5 @@
     width: 100%;
     padding: 1rem;
     transition: height 0.3s ease-in-out;
-  }
-
-  .userProfile {
-    position: relative;
-  }
-
-  .userProfileMenu {
-    position: absolute;
-    min-width: 50vw;
   }
 }

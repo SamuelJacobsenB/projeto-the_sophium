@@ -75,12 +75,17 @@ func (controller *ContentController) UpdateFile(ctx *gin.Context) {
 
 	lastFileID, err := controller.service.UpdateFile(file, id)
 	if err != nil {
+		if err := controller.fileService.DeleteByID(file.ID); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	if lastFileID != "" {
-		if err := controller.fileService.DeleteByID(lastFileID); err != nil {
+	if lastFileID != nil {
+		if err := controller.fileService.DeleteByID(*lastFileID); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}

@@ -47,20 +47,20 @@ func (service *ContentService) Create(content *entities.Content) error {
 	return service.repository.Create(content)
 }
 
-func (service *ContentService) UpdateFile(file *entities.File, id string) (string, error) {
+func (service *ContentService) UpdateFile(file *entities.File, id string) (*string, error) {
 	content, err := service.repository.FindByID(id)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	lastFileID := content.FileID
 	content.FileID = &file.ID
 
 	if err := service.repository.Update(content, id); err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return *lastFileID, nil
+	return lastFileID, nil
 }
 
 func (service *ContentService) Update(content *entities.Content, id string) error {

@@ -1,0 +1,65 @@
+@import url("../../styles/variables.css");
+
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 1rem;
+}
+
+.userAvatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.userProfileIcon {
+  width: 200px;
+  height: 200px;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.userTitle {
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.userEmail {
+  font-size: 1rem;
+  font-weight: var(--font-weight-light);
+}
+
+.userPhone {
+  font-size: 1rem;
+  font-weight: var(--font-weight-light);
+}
+
+.userAvatarButtons {
+  display: flex;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.userCourses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  width: 100%;
+}

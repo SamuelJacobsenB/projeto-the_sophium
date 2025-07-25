@@ -1,5 +1,5 @@
-import { Footer } from "../footer";
-import { Navbar } from "../navbar";
+import { Navbar, Footer } from "../";
+
 import styles from "./styles.module.css";
 
 interface DualPageProps {

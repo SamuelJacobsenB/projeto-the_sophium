@@ -11,3 +11,4 @@ export * from "./confirm-modal";
 export * from "./input-file";
 export * from "./change-order";
 export * from "./file-icon";
+export * from "./image-button";

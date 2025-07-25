@@ -13,6 +13,8 @@ func RegisterUserRoutes(routerGroup *gin.RouterGroup, controller *controllers.Us
 	routerGroup.PATCH("/:id/request-password-change", controller.RequestPasswordChange)
 	routerGroup.PATCH("/:id/verify", controller.VerifyToken)
 	routerGroup.PATCH("/:id/change-password", controller.ChangePassword)
+	routerGroup.PATCH("/avatar", middlewares.AuthMiddleware(nil), controller.UpdateAvatar)
 	routerGroup.PUT("/:id", middlewares.SelfOrAdminMiddleware(), controller.Update)
+	routerGroup.DELETE("/avatar", middlewares.AuthMiddleware(nil), controller.DeleteAvatar)
 	routerGroup.DELETE("/:id", middlewares.SelfOrAdminMiddleware(), controller.DeleteByID)
 }

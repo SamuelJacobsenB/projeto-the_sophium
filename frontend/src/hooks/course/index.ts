@@ -1,4 +1,5 @@
 export * from "./useCourses";
+export * from "./useCoursesByEnrollment";
 export * from "./useCourseBySlug";
 export * from "./useCreateCourse";
 export * from "./useUpdateCourseFile";

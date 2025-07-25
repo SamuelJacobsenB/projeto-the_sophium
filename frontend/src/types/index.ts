@@ -10,6 +10,7 @@ export * from "./entities/quiz";
 export * from "./entities/question";
 
 export * from "./dtos/user";
+export * from "./dtos/update-user";
 export * from "./dtos/enrollment";
 export * from "./dtos/progress";
 export * from "./dtos/quiz_attempt";

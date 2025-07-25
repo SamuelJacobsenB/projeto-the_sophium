@@ -8,13 +8,12 @@ import (
 )
 
 type ProgressService struct {
-	repository     *repositories.ProgressRepository
-	enrollmentRepo *repositories.EnrollmentRepository
-	contentRepo    *repositories.ContentRepository
+	repository  *repositories.ProgressRepository
+	contentRepo *repositories.ContentRepository
 }
 
-func NewProgressService(repository *repositories.ProgressRepository, enrollmentRepo *repositories.EnrollmentRepository, contentRepo *repositories.ContentRepository) *ProgressService {
-	return &ProgressService{repository, enrollmentRepo, contentRepo}
+func NewProgressService(repository *repositories.ProgressRepository, contentRepo *repositories.ContentRepository) *ProgressService {
+	return &ProgressService{repository, contentRepo}
 }
 
 func (service *ProgressService) FindByID(id string) (*entities.Progress, error) {
@@ -30,19 +29,8 @@ func (service *ProgressService) Create(progress *entities.Progress) error {
 		return errors.New("content not found")
 	}
 
-	enrollmentExists, err := service.enrollmentRepo.FindByID(progress.EnrollmentID)
-	if err != nil {
-		return err
-	}
-	if enrollmentExists == nil {
-		return errors.New("enrollment not found")
-	}
-
-	progressExists, err := service.repository.FindByID(progress.ID)
-	if err == nil {
-		return err
-	}
-	if progressExists != nil {
+	progressExists, err := service.repository.FindByContentID(progress.ContentID)
+	if err == nil && progressExists != nil {
 		return errors.New("progress already exists")
 	}
 

@@ -7,6 +7,7 @@ import type { Progress, ProgressDTO } from "../../types";
 
 export async function fetchCreateProgress(progressDTO: ProgressDTO) {
   const response = await api.post<Progress>(`/api/v1/progress`, progressDTO);
+  console.log(response);
   return response.data;
 }
 
@@ -18,22 +19,22 @@ export function useCreateProgress(enrollmentId: string) {
     mutationFn: fetchCreateProgress,
     onSuccess: (progress: Progress) => {
       setUser((user) => {
-        if (user) {
-          return {
-            ...user,
-            enrollments: user.enrollments.map((enrollment) => {
-              if (enrollment.id === enrollmentId) {
-                return {
-                  ...enrollment,
-                  progress: [...enrollment.progress, progress],
-                };
-              }
+        if (!user || !user.enrollments) return user;
 
-              return enrollment;
-            }),
-          };
-        }
-        return user;
+        return {
+          ...user,
+          enrollments: user.enrollments.map((enrollment) => {
+            if (enrollment.id === enrollmentId) {
+              const currentProgress = enrollment.progress ?? [];
+
+              return {
+                ...enrollment,
+                progress: [...currentProgress, progress],
+              };
+            }
+            return enrollment;
+          }),
+        };
       });
     },
     onError: (error) => {

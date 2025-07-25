@@ -14,7 +14,9 @@ export function FileCard({ file }: FileCardProps) {
       className={styles.fileCard}
       onClick={() => window.open(file.path, "_black")}
     >
-      <FileCardIcon extension={file.extension} />
+      <div className={styles.fileCardIconArea}>
+        <FileCardIcon extension={file.extension} />
+      </div>
       <h3 className={styles.fileCardName}>{file.name}</h3>
     </div>
   );

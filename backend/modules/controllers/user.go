@@ -223,6 +223,39 @@ func (controller *UserController) ChangePassword(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "password changed successfully"})
 }
 
+func (controller *UserController) DeleteAvatar(ctx *gin.Context) {
+	id := ctx.GetString("user_id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		return
+	}
+
+	user, err := controller.service.FindByID(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if user.AvatarID == nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "avatar not found"})
+		return
+	}
+
+	if err := controller.fileService.DeleteByID(*user.AvatarID); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	user.AvatarID = nil
+
+	if err := controller.service.Update(user, id); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user.ToResponseDTO())
+}
+
 func (controller *UserController) DeleteByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {

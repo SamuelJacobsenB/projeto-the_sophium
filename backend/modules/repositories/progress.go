@@ -24,6 +24,16 @@ func (repo *ProgressRepository) FindByID(id string) (*entities.Progress, error) 
 	return progress, nil
 }
 
+func (repo *ProgressRepository) FindByContentID(contentID string) (*entities.Progress, error) {
+	var progress *entities.Progress
+
+	if err := repo.db.Where("content_id = ?", contentID).First(&progress).Error; err != nil {
+		return nil, err
+	}
+
+	return progress, nil
+}
+
 func (repo *ProgressRepository) Create(progress *entities.Progress) error {
 	progress.ID = uuid.NewString()
 
