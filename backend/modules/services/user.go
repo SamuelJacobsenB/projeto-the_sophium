@@ -63,6 +63,10 @@ func (service *UserService) Update(user *entities.User, id string) error {
 	return service.repository.Update(user, id)
 }
 
+func (service *UserService) UpdateAvatarID(id string) error {
+	return service.repository.UpdateAvatarID(id)
+}
+
 func (service *UserService) RequestPasswordChange(id string) error {
 	user, err := service.repository.FindByID(id)
 	if err != nil {

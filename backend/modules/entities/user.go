@@ -31,6 +31,11 @@ func (user *User) ToResponseDTO() *response.UserDTO {
 		responseEnrollments[i] = *enrollment.ToResponseDTO()
 	}
 
+	var avatarDTO *response.FileDTO
+	if user.Avatar != nil {
+		avatarDTO = user.Avatar.ToResponseDTO()
+	}
+
 	return &response.UserDTO{
 		ID:          user.ID,
 		Name:        user.Name,
@@ -38,6 +43,7 @@ func (user *User) ToResponseDTO() *response.UserDTO {
 		Phone:       user.Phone,
 		Bio:         user.Bio,
 		AvatarID:    user.AvatarID,
+		Avatar:      avatarDTO,
 		Roles:       user.Roles,
 		Enrollments: responseEnrollments,
 		CreatedAt:   user.CreatedAt,

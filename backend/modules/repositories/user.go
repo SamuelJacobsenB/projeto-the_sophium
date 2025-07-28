@@ -48,6 +48,12 @@ func (repo *UserRepository) Update(user *entities.User, id string) error {
 	return repo.db.Model(&entities.User{}).Where("id = ?", id).Updates(user).Error
 }
 
+func (repo *UserRepository) UpdateAvatarID(id string) error {
+	return repo.db.Model(&entities.User{}).Where("id = ?", id).Updates(map[string]interface{}{
+		"avatar_id": nil,
+	}).Error
+}
+
 func (repo *UserRepository) VerifyUserByID(id string) error {
 	return repo.db.Model(&entities.User{}).Where("id = ?", id).Updates(map[string]interface{}{
 		"is_verified":        true,

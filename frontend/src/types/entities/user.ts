@@ -7,7 +7,7 @@ export interface User {
   phone: string | null;
   bio: string | null;
   roles: Role[];
-  avatarID: string | null;
+  avatar_id: string | null;
   avatar: File | null;
   enrollments: Enrollment[];
   created_at: Date;

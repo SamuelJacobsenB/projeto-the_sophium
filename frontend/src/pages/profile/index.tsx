@@ -46,7 +46,7 @@ export function Profile() {
         sideBar={
           <>
             <div className={styles.userAvatar}>
-              {user.avatarID ? (
+              {user.avatar_id ? (
                 <img
                   src={user.avatar?.path}
                   alt="Avatar"
@@ -57,15 +57,15 @@ export function Profile() {
               )}
               <div className={styles.userAvatarButtons}>
                 <ImageButton
-                  onChange={(file) => {
+                  onChange={async (file) => {
                     if (!file) return;
 
-                    updateAvatar(file);
+                    await updateAvatar(file);
                   }}
                 >
                   Alterar foto
                 </ImageButton>
-                {user.avatarID && (
+                {user.avatar_id && (
                   <Button
                     onClick={async () => {
                       await deleteAvatar();
@@ -87,10 +87,10 @@ export function Profile() {
               )}
             </div>
             <Button
-              className="btn btn-info"
+              className={`btn-rounded btn-info ${styles.editUserButton}`}
               onClick={() => setEditUserOpen(true)}
             >
-              Editar perfil
+              <I.pencil />
             </Button>
           </>
         }

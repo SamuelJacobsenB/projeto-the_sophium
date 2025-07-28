@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/SamuelJacobsenB/projeto-the_sophium/back/modules/dtos/request"
@@ -170,14 +169,12 @@ func (controller *UserController) UpdateAvatar(ctx *gin.Context) {
 
 func (controller *UserController) VerifyToken(ctx *gin.Context) {
 	id := ctx.Param("id")
-	fmt.Println(id)
 	if id == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
 		return
 	}
 
 	token := ctx.Query("token")
-	fmt.Println(token)
 	if token == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "token is required"})
 		return
@@ -226,30 +223,31 @@ func (controller *UserController) ChangePassword(ctx *gin.Context) {
 func (controller *UserController) DeleteAvatar(ctx *gin.Context) {
 	id := ctx.GetString("user_id")
 	if id == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "id is required"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID do usuário é obrigatório"})
 		return
 	}
 
 	user, err := controller.service.FindByID(id)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar usuário"})
 		return
 	}
 
 	if user.AvatarID == nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "avatar not found"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Usuário não possui avatar"})
 		return
 	}
 
-	if err := controller.fileService.DeleteByID(*user.AvatarID); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+	avatarID := *user.AvatarID
 
 	user.AvatarID = nil
+	if err := controller.service.UpdateAvatarID(id); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao atualizar usuário"})
+		return
+	}
 
-	if err := controller.service.Update(user, id); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	if err := controller.fileService.DeleteByID(avatarID); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao deletar avatar"})
 		return
 	}
 

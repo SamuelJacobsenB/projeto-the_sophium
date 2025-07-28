@@ -13,6 +13,7 @@ type UserDTO struct {
 	Phone       *string         `json:"phone,omitempty"`
 	Bio         *string         `json:"bio,omitempty"`
 	AvatarID    *string         `json:"avatar_id,omitempty"`
+	Avatar      *FileDTO        `json:"avatar,omitempty"`
 	Roles       types.Roles     `json:"roles"`
 	Enrollments []EnrollmentDTO `json:"enrollments,omitempty"`
 	CreatedAt   time.Time       `json:"created_at"`

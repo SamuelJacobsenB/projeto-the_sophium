@@ -1,6 +1,7 @@
 @import url("../../styles/variables.css");
 
 .sideBar {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,6 +56,12 @@
   display: flex;
   gap: 0.4rem;
   width: 100%;
+}
+
+.editUserButton {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
 }
 
 .userCourses {
