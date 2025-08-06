@@ -145,7 +145,14 @@ func (controller *UserController) UpdateAvatar(ctx *gin.Context) {
 	}
 
 	if user.AvatarID != nil {
-		if err := controller.fileService.DeleteByID(*user.AvatarID); err != nil {
+		avatarID := *user.AvatarID
+
+		if err := controller.service.UpdateAvatarID(id); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if err := controller.fileService.DeleteByID(avatarID); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}

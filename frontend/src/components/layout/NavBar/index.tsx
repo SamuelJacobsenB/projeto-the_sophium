@@ -82,7 +82,7 @@ export function Navbar({ staticOpen = false }: NavbarProps) {
             </ul>
             {user && (
               <div className={styles.userProfile}>
-                {user.avatarID ? (
+                {user.avatar_id ? (
                   <img
                     src={user.avatar?.path}
                     alt="Avatar"

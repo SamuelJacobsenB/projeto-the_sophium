@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { useMessage } from "../../contexts";
+import { useMessage, useUser } from "../../contexts";
 import { api } from "../../services";
 import { extractErrorMessage } from "../../utils";
 
@@ -10,11 +10,13 @@ export async function fetchDeleteAvatar() {
 }
 
 export function useDeleteAvatar() {
+  const { findUser } = useUser();
   const { showMessage } = useMessage();
 
   const { mutateAsync: deleteAvatar } = useMutation({
     mutationFn: fetchDeleteAvatar,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await findUser();
       showMessage("Avatar deletado com sucesso", "success");
     },
     onError: (error) => {
