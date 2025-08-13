@@ -11,13 +11,13 @@ func SelfOrAdminMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		paramID := ctx.Param("id")
 
-		userID, ok := ctx.Get("user_id")
-		if !ok {
+		userID := ctx.GetString("user_id")
+		if userID == "" {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "usuário não autenticado"})
 			return
 		}
 
-		rolesRaw, ok := ctx.Get("roles")
+		rolesRaw, ok := ctx.Get("user_roles")
 		if !ok {
 			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "roles não disponíveis"})
 			return

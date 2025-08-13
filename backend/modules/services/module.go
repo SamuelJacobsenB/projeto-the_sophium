@@ -59,10 +59,10 @@ func (service *ModuleService) ChangeOrder(id string) error {
 
 	module.Order, previous.Order = previous.Order, module.Order
 
-	if err := service.repository.Update(module, module.ID); err != nil {
+	if err := service.repository.UpdateOrder(module.Order, module.ID); err != nil {
 		return err
 	}
-	if err := service.repository.Update(previous, previous.ID); err != nil {
+	if err := service.repository.UpdateOrder(previous.Order, previous.ID); err != nil {
 		return err
 	}
 

@@ -106,7 +106,7 @@ func (controller *UserController) Update(ctx *gin.Context) {
 		return
 	}
 
-	if err := dto.Validate(); err != nil {
+	if err := dto.ValidateUpdate(); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

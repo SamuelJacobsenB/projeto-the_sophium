@@ -81,13 +81,13 @@ func (service *ContentService) ChangeOrder(id string) error {
 	if err != nil {
 		return err
 	}
-
+	
 	content.Order, previous.Order = previous.Order, content.Order
 
-	if err := service.repository.Update(content, content.ID); err != nil {
+	if err := service.repository.UpdateOrder(content.Order, content.ID); err != nil {
 		return err
 	}
-	if err := service.repository.Update(previous, previous.ID); err != nil {
+	if err := service.repository.UpdateOrder(previous.Order, previous.ID); err != nil {
 		return err
 	}
 

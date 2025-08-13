@@ -43,6 +43,7 @@
 
   .sideBar {
     width: 100%;
+    max-width: none;
     padding: 2rem;
   }
 
@@ -68,6 +69,7 @@
 
   .sideBar {
     width: 100%;
+    max-width: none;
     padding: 2rem;
   }
 

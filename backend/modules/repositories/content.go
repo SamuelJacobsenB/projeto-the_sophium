@@ -27,7 +27,7 @@ func (repo *ContentRepository) FindByID(id string) (*entities.Content, error) {
 func (repo *ContentRepository) FindByOrder(order int, moduleID string) (*entities.Content, error) {
 	var content *entities.Content
 
-	if err := repo.db.Where("order = ? AND module_id = ?", order, moduleID).First(&content).Error; err != nil {
+	if err := repo.db.Where(`"order" = ? AND module_id = ?`, order, moduleID).First(&content).Error; err != nil {
 		return nil, err
 	}
 
@@ -42,6 +42,10 @@ func (repo *ContentRepository) Create(content *entities.Content) error {
 
 func (repo *ContentRepository) Update(content *entities.Content, id string) error {
 	return repo.db.Model(&entities.Content{}).Where("id = ?", id).Updates(content).Error
+}
+
+func (repo *ContentRepository) UpdateOrder(order int, id string) error {
+	return repo.db.Model(&entities.Content{}).Where("id = ?", id).Update("order", order).Error
 }
 
 func (repo *ContentRepository) DeleteByID(id string) error {

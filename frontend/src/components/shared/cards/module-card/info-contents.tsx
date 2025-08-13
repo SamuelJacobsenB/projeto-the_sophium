@@ -53,7 +53,12 @@ export function ModuleCardInfoContents({
         await changeContentOrder(previosContent.id);
       }
 
-      refetch();
+      refetch().then((res) => {
+        if (!res.data) return;
+
+        const sorted = [...res.data.contents].sort((a, b) => a.order - b.order);
+        setContents(sorted);
+      });
     } catch (error) {
       console.log("error changing module order", error);
     }
@@ -61,14 +66,14 @@ export function ModuleCardInfoContents({
 
   useEffect(() => {
     async function load() {
-      if (contents.length === 0 && module && module.contents) {
+      if (contents.length === 0 && module?.contents?.length) {
         const sorted = [...module.contents].sort((a, b) => a.order - b.order);
         setContents(sorted);
       }
     }
 
     load();
-  }, [contents.length, module]);
+  }, [contents, module]);
 
   return (
     <div className={styles.moduleCardContent}>

@@ -12,8 +12,9 @@ export async function fetchCoursesByEnrollment(enrollments?: Enrollment[]) {
     const courses: Course[] = [];
 
     for (const enrollment of enrollments) {
+      console.log(enrollment);
       const response = await api.get<Course>(
-        `/courses/${enrollment.course_id}`
+        `/api/v1/course/${enrollment.course_id}`
       );
       courses.push(response.data);
     }
@@ -27,6 +28,8 @@ export async function fetchCoursesByEnrollment(enrollments?: Enrollment[]) {
 export function useCoursesByEnrollment() {
   const { user } = useUser();
 
+  const enabled = !!user?.enrollments?.length;
+
   const {
     data: courses,
     isLoading,
@@ -34,7 +37,8 @@ export function useCoursesByEnrollment() {
     refetch,
   } = useQuery({
     queryKey: ["enrollment-courses"],
-    queryFn: async () => await fetchCoursesByEnrollment(user?.enrollments),
+    queryFn: () => fetchCoursesByEnrollment(user?.enrollments),
+    enabled,
   });
 
   return { courses, isLoading, error, refetch };

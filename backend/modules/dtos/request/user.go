@@ -66,6 +66,38 @@ func (dto *UserDto) Validate() error {
 	return nil
 }
 
+func (dto *UserDto) ValidateUpdate() error {
+	dto.Name = strings.TrimSpace(dto.Name)
+
+	if dto.Name == "" {
+		return errors.New("name is required")
+	}
+
+	if err := utils.ValidateName(dto.Name); err != nil {
+		return errors.New(err.Error())
+	}
+
+	dto.Name = utils.CapitalizeName(dto.Name)
+
+	if dto.Phone != nil {
+		*dto.Phone = strings.TrimSpace(*dto.Phone)
+
+		if err := utils.ValidatePhone(*dto.Phone); err != nil {
+			return errors.New(err.Error())
+		}
+	}
+
+	if dto.Bio != nil {
+		*dto.Bio = strings.TrimSpace(*dto.Bio)
+
+		if len(*dto.Bio) > 128 {
+			return errors.New("bio must be less than 128 characters")
+		}
+	}
+
+	return nil
+}
+
 func (dto *UserDto) ToEntity() *entities.User {
 	return &entities.User{
 		Name:     dto.Name,

@@ -12,7 +12,7 @@ export async function fetchUpdateUser({
   dto: UpdateUserDTO;
   id: string;
 }) {
-  const response = await api.put<User>(`/api/v1/user/${id}/avatar`, {
+  const response = await api.put<User>(`/api/v1/user/${id}`, {
     name: dto.name,
     phone: dto.phone,
     bio: dto.bio,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useMessage, useUser } from "../../../contexts";
@@ -20,7 +20,7 @@ import {
 } from "../../../components";
 import { CreateModuleModal } from "./create-module-modal";
 import { UpdateModuleModal } from "./update-module-modal";
-import type { Directon } from "../../../types";
+import type { Directon, Module } from "../../../types";
 
 import styles from "./styles.module.css";
 
@@ -32,6 +32,8 @@ export function CourseInfo() {
 
   const { user } = useUser();
   const { course, error, isLoading, refetch } = useCourseBySlug(slug);
+
+  const [modules, setModules] = useState<Module[]>([]);
 
   const { createEnrollment } = useCreateEnrollment();
   const { isEnrolled, checkEnrollment } = useVerifyUserEnrollment(
@@ -51,6 +53,17 @@ export function CourseInfo() {
   const [isDeleteModuleModalOpen, setDeleteModuleModalOpen] = useState(false);
 
   const isAdmin = user?.roles.includes("admin") ?? false;
+
+  useEffect(() => {
+    async function load() {
+      if (modules.length === 0 && course?.modules?.length) {
+        const sorted = [...course.modules].sort((a, b) => a.order - b.order);
+        setModules(sorted);
+      }
+    }
+
+    load();
+  }, [course, modules]);
 
   if (isLoading || !course) return <LoadPage />;
   if (error) {
@@ -94,7 +107,12 @@ export function CourseInfo() {
         await changeModuleOrder(previosModule.id);
       }
 
-      refetch();
+      await refetch().then((res) => {
+        if (!res.data) return;
+
+        const sorted = [...res.data.modules].sort((a, b) => a.order - b.order);
+        setModules(sorted);
+      });
     } catch (error) {
       console.log("error changing module order", error);
     }
@@ -195,10 +213,10 @@ export function CourseInfo() {
             )}
 
             <div className={styles.modules}>
-              {!course.modules || course.modules.length === 0 ? (
+              {!modules || modules.length === 0 ? (
                 <p>Nenhum módulo encontrado</p>
               ) : (
-                course.modules.map((module) => (
+                modules.map((module) => (
                   <ModuleCard.Root key={module.id}>
                     <ModuleCard.Header>
                       <ModuleCard.Info module={module} />
@@ -241,6 +259,7 @@ export function CourseInfo() {
         </>
       }
       sideBarClassName={styles.sideBar}
+      className={styles.dualPage}
     />
   );
 }
